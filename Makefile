@@ -6,7 +6,7 @@
 #    By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/17 05:10:37 by mflury            #+#    #+#              #
-#    Updated: 2024/02/17 05:24:53 by mflury           ###   ########.fr        #
+#    Updated: 2024/03/02 23:12:41 by mflury           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,26 +30,34 @@ else
 	MLX_DIR = minilibx/macOS
 endif
 
-SRCS	=	\
+SRCS	=	error.c \
+			parsing.c \
+			main.c \
 
 all: $(NAME)
 
 %.o:%.c
-			${CC} ${CFLAGS} -Iincludes -Ilibft -I${MLX_DIR} -c $? -o $@
+			@echo Creating objets files $<
+			${CC} ${CFLAGS} -Ilibft -Ignl -I${MLX_DIR} -c $? -o $@
 
 ${NAME}:	${OBJS}
 			@make -C libft
+			@make -C gnl
 			@make -C ${MLX_DIR}
 			${CC} ${CFLAGS} $^ ${LIBS} -o ${NAME}
 
 clean:
+			@echo Deleting objets files
 			${RM} $(OBJS)
 			@make -C libft clean
+			@make -C gnl clean
 			@make -C ${MLX_DIR} clean
 
 fclean:		clean
+			@echo Deleting others files
 			${RM} $(NAME)
 			@make -C libft fclean
+			@make -C gnl fclean
 
 re:	fclean all
 
