@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 06:21:02 by mflury            #+#    #+#             */
-/*   Updated: 2024/03/03 01:21:36 by mflury           ###   ########.fr       */
+/*   Updated: 2024/03/03 03:31:00 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,16 @@ int	main(int argc, char **argv)
 	if (file.fd < 0)
 		error("Can't open file");
 	line = get_next_line(file.fd);
-	line_check(line, &file);
-	
+	While (line)
+	{
+		line_check(line, &file);
+		free(line);
+		line = get_next_line(file.fd);
+		if (file->textures.count == 6)
+		{
+			free(line);
+			break ;
+		}
+	}
 	return EXIT_SUCCESS;
 }

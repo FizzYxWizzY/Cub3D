@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 06:21:41 by mflury            #+#    #+#             */
-/*   Updated: 2024/03/03 02:54:36 by mflury           ###   ########.fr       */
+/*   Updated: 2024/03/03 03:25:07 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ typedef struct	s_file
 
 typedef struct	s_textures
 {
+	int			count;
 	char		*north;
 	char		*south;
 	char		*west;

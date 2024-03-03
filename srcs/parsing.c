@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 21:40:25 by mflury            #+#    #+#             */
-/*   Updated: 2024/03/03 02:54:30 by mflury           ###   ########.fr       */
+/*   Updated: 2024/03/03 03:26:49 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ void	set_colors(int *tab, char *line)
 			error("RGB value out of range. (0-255)");
 		}
 		tab[i] = ft_atoi(codes[i]);
-		free(codes[i]);
-		i++;
+		free(codes[i++]);
 	}
 	free(codes);
 }
@@ -85,7 +84,8 @@ void	line_check(char *line, t_file *file)
 	else if (line[i] == 'C')
 		set_color(file->textures.ceiling, line);
 	else
-		error("you fucked up something...");
+		return ;
+	file->textures.count++;
 }
 
 int	path_check(char *map_path)
