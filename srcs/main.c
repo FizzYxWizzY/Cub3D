@@ -6,11 +6,28 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 06:21:02 by mflury            #+#    #+#             */
-/*   Updated: 2024/03/03 03:31:00 by mflury           ###   ########.fr       */
+/*   Updated: 2024/03/03 04:31:49 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
+
+void	init_data(t_file *file)
+{
+	file->fd = -1;
+	file->textures.count = 0;
+	file->textures.north = NULL;
+	file->textures.south = NULL;
+	file->textures.west = NULL;
+	file->textures.east = NULL;
+	file->textures.floor[0] = 0;
+	file->textures.floor[1] = 0;
+	file->textures.floor[2] = 0;
+	file->textures.ceiling[0] = 255;
+	file->textures.ceiling[1] = 255;
+	file->textures.ceiling[2] = 255;
+	file->map = NULL;
+}
 
 int	main(int argc, char **argv)
 {
@@ -26,17 +43,17 @@ int	main(int argc, char **argv)
 	file.fd = open(argv[1], O_RDONLY);
 	if (file.fd < 0)
 		error("Can't open file");
+	init_data(&file);
 	line = get_next_line(file.fd);
 	While (line)
 	{
 		line_check(line, &file);
 		free(line);
-		line = get_next_line(file.fd);
 		if (file->textures.count == 6)
-		{
-			free(line);
 			break ;
-		}
+		line = get_next_line(file.fd);
 	}
+	if (file->textures.count != 6)
+		error("missing texture(s)");
 	return EXIT_SUCCESS;
 }
