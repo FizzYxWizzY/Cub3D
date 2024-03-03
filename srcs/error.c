@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 21:17:36 by mflury            #+#    #+#             */
-/*   Updated: 2024/03/02 21:17:46 by mflury           ###   ########.fr       */
+/*   Updated: 2024/03/03 04:45:52 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,6 @@
 
 void	error(char *msg)
 {
-	ft_printf("Error:\n%s\n", msg);
+	printf("Error:\n%s\n", msg);
 	exit (EXIT_FAILURE);
 }
