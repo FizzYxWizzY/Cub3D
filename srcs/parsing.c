@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 21:40:25 by mflury            #+#    #+#             */
-/*   Updated: 2024/03/03 02:29:18 by mflury           ###   ########.fr       */
+/*   Updated: 2024/03/03 02:54:30 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,33 @@
 
 // im paid by the char, tbh... xoxo
 
-void	set_color(int *tab, char *line)
+void	set_colors(int *tab, char *line)
 {
 	int	i;
 	char **codes;
 	char *start;
 
 	i = 0;
-	while (line[i] == 'F' || line[i] == 'C' || line[i] == ' ' || line[i] == '\t')
+	while (line[i] == 'F' || line[i] == 'C' ||
+		line[i] == ' ' || line[i] == '\t')
 		i++;
 	start = line[i];
 	codes = ft_split(start, ',');
 	i = 0;
-	while (codes[i])
+	while (i < 3)
 	{
+		if (ft_atoi(codes[i]) < 0 || ft_atoi(codes[i]) > 255)
+		{
+			while (codes[i])
+				free(codes[i++]);
+			free(codes);
+			error("RGB value out of range. (0-255)");
+		}
 		tab[i] = ft_atoi(codes[i]);
+		free(codes[i]);
 		i++;
 	}
+	free(codes);
 }
 
 void	set_path(char *path, char *line)
@@ -64,16 +74,18 @@ void	line_check(char *line, t_file *file)
 		i++;
 	if (line[i] == 'N')
 		set_path(file->textures.north, line);
-	if (line[i] == 'S')
+	else if (line[i] == 'S')
 		set_path(file->textures.south, line);
-	if (line[i] == 'W')
+	else if (line[i] == 'W')
 		set_path(file->textures.west, line);
-	if (line[i] == 'E')
+	else if (line[i] == 'E')
 		set_path(file->textures.east, line);
-	if (line[i] == 'F')
+	else if (line[i] == 'F')
 		set_color(file->textures.floor, line);
-	if (line[i] == 'C')
+	else if (line[i] == 'C')
 		set_color(file->textures.ceiling, line);
+	else
+		error("you fucked up something...");
 }
 
 int	path_check(char *map_path)

@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 06:21:41 by mflury            #+#    #+#             */
-/*   Updated: 2024/03/03 00:53:04 by mflury           ###   ########.fr       */
+/*   Updated: 2024/03/03 02:54:36 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,12 @@ typedef struct	s_textures
 	int			ceiling[3];
 }				t_textures;
 
-
-
 void	error(char *msg);
+
+int		path_check(char *map_path);
+void	line_check(char *line, t_file *file);
+void	set_colors(int *tab, char *line);
+void	set_path(char *path, char *line);
 
 
 #endif
