@@ -1,5 +1,6 @@
 .vscode/
-*.a
 *.o
+*.a
+a.out
 cub3D
 README.md

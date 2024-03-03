@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 06:21:41 by mflury            #+#    #+#             */
-/*   Updated: 2024/03/02 23:02:59 by mflury           ###   ########.fr       */
+/*   Updated: 2024/03/03 00:53:04 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,8 @@
 
 # endif
 
-enum e_events
-{
-	ON_KEYDOWN = 2,
-	ON_KEYUP = 3,
-	ON_MOUSEDOWN = 4,
-	ON_MOUSEUP = 5,
-	ON_MOUSEMOVE = 6,
-	ON_EXPOSE = 12,
-	ON_DESTROY = 17
-};
 
 # ifdef __APPLE__
-
 enum e_keys
 {
 	KEY_ESC = 53,
@@ -55,8 +44,18 @@ enum e_keys
 	KEY_LEFT = 123,
 	KEY_RIGHT = 124,
 };
-# else
 
+enum e_events
+{
+	ON_KEYDOWN = 0,
+	ON_KEYUP = 0,
+	ON_MOUSEDOWN = 0,
+	ON_MOUSEUP = 0,
+	ON_MOUSEMOVE = 0,
+	ON_EXPOSE = 0,
+	ON_DESTROY = 0
+};
+# else
 enum e_keys
 {
 	KEY_ESC = 65307,
@@ -69,6 +68,17 @@ enum e_keys
 	KEY_LEFT = 65361,
 	KEY_RIGHT = 65363,
 };
+
+enum e_events
+{
+	ON_KEYDOWN = 2,
+	ON_KEYUP = 3,
+	ON_MOUSEDOWN = 4,
+	ON_MOUSEUP = 5,
+	ON_MOUSEMOVE = 6,
+	ON_EXPOSE = 12,
+	ON_DESTROY = 17
+};
 # endif
 
 typedef struct	s_file
@@ -80,10 +90,10 @@ typedef struct	s_file
 
 typedef struct	s_textures
 {
-	char		*north_texture;
-	char		*south_texture;
-	char		*west_texture;
-	char		*east_texture;
+	char		*north;
+	char		*south;
+	char		*west;
+	char		*east;
 	int			floor[3];
 	int			ceiling[3];
 }				t_textures;
