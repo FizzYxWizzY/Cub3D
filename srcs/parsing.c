@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 21:40:25 by mflury            #+#    #+#             */
-/*   Updated: 2024/03/03 03:26:49 by mflury           ###   ########.fr       */
+/*   Updated: 2024/03/04 07:46:45 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	set_colors(int *tab, char *line)
 	start = line[i];
 	codes = ft_split(start, ',');
 	i = 0;
-	while (i < 3)
+	while (codes[i])
 	{
 		if (ft_atoi(codes[i]) < 0 || ft_atoi(codes[i]) > 255)
 		{
@@ -80,9 +80,9 @@ void	line_check(char *line, t_file *file)
 	else if (line[i] == 'E')
 		set_path(file->textures.east, line);
 	else if (line[i] == 'F')
-		set_color(file->textures.floor, line);
+		set_colors(file->textures.floor, line);
 	else if (line[i] == 'C')
-		set_color(file->textures.ceiling, line);
+		set_colors(file->textures.ceiling, line);
 	else
 		return ;
 	file->textures.count++;

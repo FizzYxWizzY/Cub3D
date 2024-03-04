@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 06:21:02 by mflury            #+#    #+#             */
-/*   Updated: 2024/03/03 04:31:49 by mflury           ###   ########.fr       */
+/*   Updated: 2024/03/04 07:24:23 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ void	init_data(t_file *file)
 	file->textures.south = NULL;
 	file->textures.west = NULL;
 	file->textures.east = NULL;
-	file->textures.floor[0] = 0;
-	file->textures.floor[1] = 0;
-	file->textures.floor[2] = 0;
-	file->textures.ceiling[0] = 255;
-	file->textures.ceiling[1] = 255;
-	file->textures.ceiling[2] = 255;
+	file->textures.floor[0] = -1;
+	file->textures.floor[1] = -1;
+	file->textures.floor[2] = -1;
+	file->textures.ceiling[0] = -1;
+	file->textures.ceiling[1] = -1;
+	file->textures.ceiling[2] = -1;
 	file->map = NULL;
 }
 
@@ -45,15 +45,15 @@ int	main(int argc, char **argv)
 		error("Can't open file");
 	init_data(&file);
 	line = get_next_line(file.fd);
-	While (line)
+	while (line)
 	{
 		line_check(line, &file);
 		free(line);
-		if (file->textures.count == 6)
+		if (file.textures.count == 6)
 			break ;
 		line = get_next_line(file.fd);
 	}
-	if (file->textures.count != 6)
+	if (file.textures.count != 6)
 		error("missing texture(s)");
 	return EXIT_SUCCESS;
 }
