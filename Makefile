@@ -3,17 +3,19 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+         #
+#    By: abourgue <abourgue@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/17 05:10:37 by mflury            #+#    #+#              #
-#    Updated: 2024/03/02 23:12:41 by mflury           ###   ########.fr        #
+#    Updated: 2024/03/21 22:49:11 by abourgue         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 NAME	=	cub3D
 
-OBJS	=	$(SRCS:%.c=%.o)
+OBJS	=	$(SOURCES:%.c=%.o)
+
+SRC_DIR =	srcs/
 
 CC		=	gcc
 
@@ -30,9 +32,20 @@ else
 	MLX_DIR = minilibx/macOS
 endif
 
-SRCS	=	error.c \
+
+SRCS	=	
 			parsing.c \
+			error.c \
 			main.c \
+			draw_map.c \
+			draw_player.c \
+			draw_utils.c \
+			init_struct.c \
+			move.c \
+			raycasting.c \
+			utils.c
+
+SOURCES = $(addprefix $(SRC_DIR), $(SRCS))
 
 all: $(NAME)
 
