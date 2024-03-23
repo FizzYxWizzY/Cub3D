@@ -24,23 +24,23 @@
 // 	printf("%d\n", x);
 // }
 
-void	drawRays(t_data *data)
+void	drawWalls(t_data *data, double dist, double angle)
 {
-	double	x;
-	double angle;
+	double	lineH;
+	double	lineO;
+	int		y;
 
-	angle = checkAngle(data->player.rA - DR * 45);
-	x = 0;
-	data->player.rI = sWidth;
-	while (x < sWidth)
-	{
-		
-		raycast(data, &data->ray, angle, 0xAA00FF);
-		angle += 90 * DR / sWidth;
-		checkAngle(angle);
-		data->player.rI += 1 ; // position x du rayon
-		x += 1;
-	}
+	angle = checkAngle(data->player.rA - angle);
+    lineH = (data->map.sizeWall * sHeight) / (dist * cos(angle)); // taille du mur a dessiner
+	if (lineH > sHeight)
+		lineH = sHeight;
+	lineO = sHeight / 2 - lineH / 2;
+    y = 0;
+    while (y < lineH)
+    {
+        my_mlx_pixel_put(data, data->player.rI, y + lineO, 0xAA00FF);
+        y += 1;
+    }
 }
 
 void	drawSky(t_data *data)

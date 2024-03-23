@@ -1,5 +1,41 @@
 #include "../cub3d.h"
 
+void rotateView(t_data *data, int keycode)
+{
+	if (keycode == 2)
+	{
+		data->player.rA += 0.1; // tourner
+		if (data->player.rA > 2 * M_PI)
+			data->player.rA -= 2 * M_PI;
+	}
+	else if (keycode == 0)
+	{
+		data->player.rA -= 0.1;
+		if (data->player.rA < 0)
+			data->player.rA += 2 * M_PI;
+	}
+}
+
+void	move(t_data *data, int keycode)
+{
+	if (keycode == 13) // avancer
+	{
+		if (!checkWall(data, &data->ray, data->player.rA, 0))
+		{
+			data->player.x += data->player.dirX;
+			data->player.y += data->player.dirY;
+		}
+	}
+	if (keycode == 1) // reculer
+	{
+		if (!checkWall(data, &data->ray, data->player.rA, 1))
+		{
+			data->player.x -= data->player.dirX;
+			data->player.y -= data->player.dirY;
+		}
+	}
+}
+
 int	checkWall(t_data *data, t_raycast *ray, double angle, int dir)
 {
 	double nextX;
@@ -26,5 +62,4 @@ int	checkWall(t_data *data, t_raycast *ray, double angle, int dir)
 		return (0);
 	return (1);
 }
-
 

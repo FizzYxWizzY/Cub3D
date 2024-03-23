@@ -6,16 +6,14 @@
 /*   By: abourgue <abourgue@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 13:41:32 by abourgue          #+#    #+#             */
-/*   Updated: 2024/03/23 13:42:37 by abourgue         ###   ########.fr       */
+/*   Updated: 2024/03/23 15:25:42 by abourgue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
-int drawMap(t_data *data)
+int createMap(t_data *data)
 {
-	int	x;
-	int	y;
 	int worldMap[24][24] = 
 	{
 		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
@@ -43,12 +41,23 @@ int drawMap(t_data *data)
 		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 	};
-	x = -1;
-	y = -1;
 	if (!initMapStruct(&data->map))
 		return (0);
 	if (!copyIntTbl(&data->map, worldMap))
 		return (0);
+	return (1);
+}
+
+void	minimap(t_data *data)
+{
+	int	x;
+	int	y;
+
+	x = -1;
+	y = -1;
+	drawBottom(data);
+	drawPlayerPos(data, data->player.x, data->player.y);
+	drawRaysMiniMap(data);
 	while (++y < data->map.mapWidth)
 	{
 		while (++x < data->map.mapHeight)
@@ -62,7 +71,38 @@ int drawMap(t_data *data)
 		x = -1;
 	}
 	data->map.y = 0;
-	return (1);
+}
+
+void	drawRaysMiniMap(t_data *data)
+{
+	double  x;
+	double  angle;
+
+	angle = checkAngle(data->player.rA - DR * 45);
+	x = 0;
+	while (x < sWidth)
+	{
+	    rayDist(data, &data->ray, angle);
+        drawLine(data, data->ray.nextX, data->ray.nextY, 0xAA00FF);
+		angle += 90 * DR / sWidth;
+		checkAngle(angle);
+		x += 1;
+	}
+}
+
+void	drawBottom(t_data *data)
+{
+	int x;
+	int y;
+	
+	x = -1;
+	y = -1;
+	while (++y < data->map.mapHeight * data->map.sizeWall)
+	{
+		while (++x < data->map.mapHeight * data->map.sizeWall)
+			my_mlx_pixel_put(data, x, y, 0x000000);
+		x = -1;
+	}	
 }
 
 void	drawSquare(t_data *data, int x, int y)

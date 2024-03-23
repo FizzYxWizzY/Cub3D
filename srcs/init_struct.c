@@ -49,13 +49,3 @@ int	initPlayerStruct(t_player *player)
 	player->incrY = 0;
 	return (1);
 }
-
-void	initTextureStruct(t_data *data, t_textures *tex)
-{
-	(void)data;
-	(void)tex;
-	// tex->pathE = "./assets/est.xpm";
-	// tex->pathO = "./assets/oues.xpm";
-	// tex->pathN = "./assets/nord.xpm";
-	// tex->pathS = "./assets/sud.xpm";
-}

@@ -6,7 +6,7 @@
 /*   By: abourgue <abourgue@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 06:21:41 by mflury            #+#    #+#             */
-/*   Updated: 2024/03/23 13:46:19 by abourgue         ###   ########.fr       */
+/*   Updated: 2024/03/23 15:31:26 by abourgue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,8 +137,11 @@ typedef struct	s_raycast {
 	double		posY;
 	double		stepX;
 	double		stepY;
+	double		nextX;
+	double		nextY;
 	int			mapX;	//coorrdonée du joueur dans la map
 	int			mapY;	//*
+	
 }				t_raycast;
 
 typedef struct	s_data {
@@ -161,41 +164,50 @@ void	line_check(char *line, t_file *file);
 void	set_colors(int *tab, char *line);
 void	set_path(char *path, char *line);
 
+//-------------------draw_map.c-------------------
+void	drawWalls(t_data *data, double dist, double angle);
+void	drawSky(t_data *data);
+void	drawGround(t_data *data);
+
+//-------------------draw_minimap.c-------------------
+int 	createMap(t_data *data);
+void	minimap(t_data *data);
+void	drawBottom(t_data *data);
+void 	drawSquare(t_data *data, int x, int y);
+void	drawRaysMiniMap(t_data *data);
+
+//-------------------draw_player.c-------------------
+void 	drawPlayerPos(t_data *data, int x, int y);
+
+//-------------------draw_utils.c-------------------
+void	drawLine(t_data *data,int x2,int y2, int color);
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+
 //-------------------init_struct.c-------------------
 int		initRaycastStruct(t_raycast *ray, t_data *data, double angle);
 int		initMapStruct(t_map *map);
 int		initPlayerStruct(t_player *player);
-// void	initTextureStruct(t_data *data, t_texture *tex);
+
+//-------------------main.c-------------------
+int		key_hook(int keycode, t_data *data);
+void 	drawScene(t_data *data);
 
 //-------------------move.c-------------------
+void 	rotateView(t_data *data, int keycode);
+void	move(t_data *data, int keycode);
 int		checkWall(t_data *data, t_raycast *ray, double angle, int dir);
 
 //-------------------raycasting.c-------------------
-void	raycast(t_data *data, t_raycast *ray, double angle, int color);
-int		key_hook(int keycode, t_data *data);
+void	raycasting(t_data *data);
+double	rayDist(t_data *data, t_raycast *ray, double angle);
 
 //-------------------utils.c-------------------
 int		copyIntTbl(t_map *map, int tbl[24][24]);
 double	checkAngle(double angle);
 
-//==============================DRAW==============================
-
-//-------------------draw_map.c-------------------
-int 	drawMap(t_data *data);
-void 	drawSquare(t_data *data, int x, int y);
-void	drawRays(t_data *data);
-void	drawSky(t_data *data);
-void	drawGround(t_data *data);
-
-//-------------------draw_player.c-------------------
-void 	drawPlayerPos(t_data *data, int x, int y);
-void	drawPlayerDirection(t_data *data);
-void	drawFOV(t_data *data);
 
 
-//-------------------draw_utils.c-------------------
-void	drawLine(t_data *data,int x2,int y2, int color);
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+
 
 
 #endif
