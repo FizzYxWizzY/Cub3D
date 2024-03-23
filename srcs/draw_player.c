@@ -11,7 +11,7 @@ void	drawPlayerPos(t_data *data, int x, int y)
 
 void	drawPlayerDirection(t_data *data)
 {
-	raycast(data, &data->ray, data->player.rA, 0xFF0000);
+	// raycast(data, &data->ray, data->player.rA, 0xFF0000);
 	drawRays(data);
 	// drawFOV(data);
 }
@@ -25,6 +25,5 @@ void	drawFOV(t_data *data)
 	printf("%f\n", angle * 100);
 	raycast(data, &data->ray, angle, 0xFF8000);
 	angle = data->player.rA - M_PI / 4; // fov gauche
-
 	raycast(data, &data->ray, angle, 0xAA00FF);
 }

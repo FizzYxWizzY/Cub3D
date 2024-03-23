@@ -26,10 +26,11 @@ void raycast(t_data *data, t_raycast *ray, double angle, int color)
     diffX = nextX - data->player.x;
     diffY = nextY - data->player.y;
     dist = sqrt(pow(diffX, 2) + pow(diffY, 2));
-    lineH = (data->map.sizeWall * screenHeight) / (dist); // taille du mur a dessiner
-		if (lineH > screenHeight)
-			lineH = screenHeight;
-	lineO = screenHeight / 2 - lineH / 2;
+    angle = checkAngle(data->player.rA - angle);
+    lineH = (data->map.sizeWall * sHeight) / (dist * cos(angle)); // taille du mur a dessiner
+	if (lineH > sHeight)
+		lineH = sHeight;
+	lineO = sHeight / 2 - lineH / 2;
     y = 0;
     while (y < lineH)
     {

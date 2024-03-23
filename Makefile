@@ -6,7 +6,7 @@
 #    By: abourgue <abourgue@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/17 05:10:37 by mflury            #+#    #+#              #
-#    Updated: 2024/03/21 22:49:11 by abourgue         ###   ########.fr        #
+#    Updated: 2024/03/23 13:49:24 by abourgue         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,9 +33,7 @@ else
 endif
 
 
-SRCS	=	
-			parsing.c \
-			error.c \
+SRCS	=	error.c \
 			main.c \
 			draw_map.c \
 			draw_player.c \
@@ -43,7 +41,8 @@ SRCS	=
 			init_struct.c \
 			move.c \
 			raycasting.c \
-			utils.c
+			utils.c \
+			draw_minimap.c \
 
 SOURCES = $(addprefix $(SRC_DIR), $(SRCS))
 

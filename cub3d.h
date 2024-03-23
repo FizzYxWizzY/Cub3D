@@ -6,7 +6,7 @@
 /*   By: abourgue <abourgue@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 06:21:41 by mflury            #+#    #+#             */
-/*   Updated: 2024/03/21 22:45:04 by abourgue         ###   ########.fr       */
+/*   Updated: 2024/03/23 13:46:19 by abourgue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,9 @@ enum e_events
 };
 # endif
 
-#define screenWidth 1920
-#define screenHeight 1080
-#define FOV_ANGLE 90
+#define sWidth 1920
+#define sHeight 1080
+#define DR 0.0174533
 
 typedef struct	s_textures
 {
@@ -176,6 +176,7 @@ int		key_hook(int keycode, t_data *data);
 
 //-------------------utils.c-------------------
 int		copyIntTbl(t_map *map, int tbl[24][24]);
+double	checkAngle(double angle);
 
 //==============================DRAW==============================
 
@@ -183,6 +184,8 @@ int		copyIntTbl(t_map *map, int tbl[24][24]);
 int 	drawMap(t_data *data);
 void 	drawSquare(t_data *data, int x, int y);
 void	drawRays(t_data *data);
+void	drawSky(t_data *data);
+void	drawGround(t_data *data);
 
 //-------------------draw_player.c-------------------
 void 	drawPlayerPos(t_data *data, int x, int y);

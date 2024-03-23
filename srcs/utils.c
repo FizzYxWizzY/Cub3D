@@ -33,3 +33,12 @@ int copyIntTbl(t_map *map, int tbl[24][24])
 	}
 	return (1);
 }
+
+double checkAngle(double angle)
+{
+	if (angle < 0)
+        angle += 2 * M_PI;
+    else if (angle > 2 * M_PI)
+        angle -= 2 * M_PI;
+	return (angle);
+}
