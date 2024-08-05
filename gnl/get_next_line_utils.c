@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 15:01:51 by mflury            #+#    #+#             */
-/*   Updated: 2024/03/02 06:51:50 by mflury           ###   ########.fr       */
+/*   Updated: 2024/07/29 09:54:23 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*ft_strjoins(char *str, char c)
 	size_t	str_lenght;
 	char	*newstr;
 
-	str_lenght = ft_strlen(str);
+	str_lenght = ft_strlens(str);
 	i = 0;
 	newstr = malloc(str_lenght + 2);
 	if (!newstr)

@@ -6,7 +6,7 @@
 #    By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/17 05:10:37 by mflury            #+#    #+#              #
-#    Updated: 2024/03/02 23:12:41 by mflury           ###   ########.fr        #
+#    Updated: 2024/07/29 09:47:42 by mflury           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,9 +30,9 @@ else
 	MLX_DIR = minilibx/macOS
 endif
 
-SRCS	=	error.c \
-			parsing.c \
-			main.c \
+SRCS	=	srcs/error.c \
+			srcs/parsing.c \
+			srcs/main.c \
 
 all: $(NAME)
 

@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 21:40:25 by mflury            #+#    #+#             */
-/*   Updated: 2024/03/04 07:46:45 by mflury           ###   ########.fr       */
+/*   Updated: 2024/07/29 09:53:57 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	set_colors(int *tab, char *line)
 	while (line[i] == 'F' || line[i] == 'C' ||
 		line[i] == ' ' || line[i] == '\t')
 		i++;
-	start = line[i];
+	start = &line[i];
 	codes = ft_split(start, ',');
 	i = 0;
 	while (codes[i])
@@ -47,7 +47,7 @@ void	set_path(char *path, char *line)
 	int		i;
 	int		j;
 	int		k;
-	char	*texture;
+	// char	*texture;
 
 	i = 0;
 	j = 0;
@@ -58,10 +58,9 @@ void	set_path(char *path, char *line)
 		i++;
 	while (line[i + j])
 		j++;
-	texture = malloc(sizeof(char) * (j + 1));
+	path = malloc(sizeof(char) * (j + 1));
 	while (i <= j)
-		texture[k++] = line[i++];
-	path = &texture;
+		path[k++] = line[i++];
 }
 
 void	line_check(char *line, t_file *file)
