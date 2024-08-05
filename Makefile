@@ -6,7 +6,7 @@
 #    By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/17 05:10:37 by mflury            #+#    #+#              #
-#    Updated: 2024/03/02 23:12:41 by mflury           ###   ########.fr        #
+#    Updated: 2024/08/05 20:00:07 by mflury           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ CC		=	gcc
 
 RM      =	rm -f
 
-CFLAGS	=	-Wall -Wextra -Werror
+CFLAGS	=	-Wall -Wextra -Werror -g
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
@@ -30,9 +30,9 @@ else
 	MLX_DIR = minilibx/macOS
 endif
 
-SRCS	=	error.c \
-			parsing.c \
-			main.c \
+SRCS	=	srcs/error.c \
+			srcs/parsing.c \
+			srcs/main.c \
 
 all: $(NAME)
 

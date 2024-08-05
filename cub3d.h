@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 06:21:41 by mflury            #+#    #+#             */
-/*   Updated: 2024/03/04 07:24:42 by mflury           ###   ########.fr       */
+/*   Updated: 2024/08/05 14:46:05 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,6 @@ enum e_events
 };
 # endif
 
-typedef struct	s_file
-{
-	int			fd;
-	t_textures	textures;
-	char		**map;
-}				t_file;
-
 typedef struct	s_textures
 {
 	int			count;
@@ -98,6 +91,13 @@ typedef struct	s_textures
 	int			floor[3];
 	int			ceiling[3];
 }				t_textures;
+
+typedef struct	s_file
+{
+	int			fd;
+	t_textures	textures;
+	char		**map;
+}				t_file;
 
 void	error(char *msg);
 void	init_data(t_file *file);
