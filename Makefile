@@ -6,7 +6,7 @@
 #    By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/17 05:10:37 by mflury            #+#    #+#              #
-#    Updated: 2024/08/05 20:00:07 by mflury           ###   ########.fr        #
+#    Updated: 2024/08/05 22:13:52 by mflury           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,10 +23,10 @@ CFLAGS	=	-Wall -Wextra -Werror -g
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
-	LIBS	=	-Llibft -lft -L./minilibx/linux -lmlx -lXext -lX11 -lm -lbsd
+	LIBS	=	-Llibft -lft -Lgnl -l:get_next_line.a -L./minilibx/linux -lmlx -lXext -lX11 -lm -lbsd
 	MLX_DIR = minilibx/linux
 else
-	LIBS = -Llibft -lft -L./minilibx/macOS -lmlx -framework OpenGL -framework AppKit
+	LIBS = -Llibft -lft -Lgnl -l:get_next_line.a -L./minilibx/macOS -lmlx -framework OpenGL -framework AppKit
 	MLX_DIR = minilibx/macOS
 endif
 
