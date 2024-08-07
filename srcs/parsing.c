@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 21:40:25 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/08 00:28:39 by mflury           ###   ########.fr       */
+/*   Updated: 2024/08/08 01:07:46 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,12 @@ void	set_colors(int *tab, char *line)
 	free(codes);
 }
 
-void	set_path(char *path, char *line)
+char	*set_path(char *line)
 {
 	int		i;
 	int		j;
 	int		k;
+	char *path;
 
 	i = 0;
 	j = 0;
@@ -61,14 +62,11 @@ void	set_path(char *path, char *line)
 	printf("j: %d\n", j);
 	path = malloc(sizeof(char) * (j + 1));
 	while (line[i] && line[i] != '\n')
-	{
-		path[k] = line[i];
-		k++;
-		i++;
-	}
+		path[k++] = line[i++];
 	path[k] = '\0';
 	printf("line: \"%s\"\n", line);
 	printf("path: \"%s\"\n", path);
+	return (path);
 }
 
 void	line_check(char *line, t_file *file)
@@ -79,13 +77,13 @@ void	line_check(char *line, t_file *file)
 	while (line[i] == ' ' || line[i] == '\t')
 		i++;
 	if (line[i] == 'N')
-		set_path(file->textures.north, line);
+		file->textures.north = set_path(line);
 	else if (line[i] == 'S')
-		set_path(file->textures.south, line);
+		file->textures.south = set_path(line);
 	else if (line[i] == 'W')
-		set_path(file->textures.west, line);
+		file->textures.west = set_path(line);
 	else if (line[i] == 'E')
-		set_path(file->textures.east, line);
+		file->textures.east = set_path(line);
 	else if (line[i] == 'F')
 		set_colors(file->textures.floor, line);
 	else if (line[i] == 'C')
