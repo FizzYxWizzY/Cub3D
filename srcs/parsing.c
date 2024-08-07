@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 21:40:25 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/07 23:57:45 by mflury           ###   ########.fr       */
+/*   Updated: 2024/08/08 00:28:39 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	set_path(char *path, char *line)
 	int		i;
 	int		j;
 	int		k;
-	// char	*texture;
 
 	i = 0;
 	j = 0;
@@ -61,12 +60,15 @@ void	set_path(char *path, char *line)
 		j++;
 	printf("j: %d\n", j);
 	path = malloc(sizeof(char) * (j + 1));
-	while (i < j)
+	while (line[i] && line[i] != '\n')
 	{
 		path[k] = line[i];
-		++k;
-		++i;
+		k++;
+		i++;
 	}
+	path[k] = '\0';
+	printf("line: \"%s\"\n", line);
+	printf("path: \"%s\"\n", path);
 }
 
 void	line_check(char *line, t_file *file)
