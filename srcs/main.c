@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 06:21:02 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/08 00:51:27 by mflury           ###   ########.fr       */
+/*   Updated: 2024/08/08 01:21:23 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,9 @@ int	main(int argc, char **argv)
 	printf("texture floor: [%d,%d,%d]\n", file.textures.floor[0], file.textures.floor[1], file.textures.floor[2]);
 	printf("texture ceiling: [%d,%d,%d]\n",  file.textures.ceiling[0], file.textures.ceiling[1], file.textures.ceiling[2]);
 	printf("texture count: %d\n", file.textures.count);
+	free(file.textures.north);
+	free(file.textures.south);
+	free(file.textures.east);
+	free(file.textures.west);
 	return EXIT_SUCCESS;
 }
