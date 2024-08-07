@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 21:40:25 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/05 14:58:17 by mflury           ###   ########.fr       */
+/*   Updated: 2024/08/07 23:57:45 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,17 @@ void	set_path(char *path, char *line)
 		line[i] == 'W' || line[i] == 'E' || line[i] == 'A' ||
 		line[i] == ' ' || line[i] == '\t')
 		i++;
+	printf("i: %d,", i);
 	while (line[i + j])
 		j++;
+	printf("j: %d\n", j);
 	path = malloc(sizeof(char) * (j + 1));
-	while (i <= j)
-		path[k++] = line[i++];
+	while (i < j)
+	{
+		path[k] = line[i];
+		++k;
+		++i;
+	}
 }
 
 void	line_check(char *line, t_file *file)
