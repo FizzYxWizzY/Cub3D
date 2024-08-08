@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 06:21:02 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/08 01:29:06 by mflury           ###   ########.fr       */
+/*   Updated: 2024/08/08 03:26:23 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,14 @@ void	init_data(t_file *file)
 
 void	free_all(t_file *file)
 {
-	free(file->textures.north);
-	free(file->textures.south);
-	free(file->textures.east);
-	free(file->textures.west);
+	if (file->textures.north)
+		free(file->textures.north);
+	if (file->textures.south)
+		free(file->textures.south);
+	if (file->textures.east)
+		free(file->textures.east);
+	if (file->textures.west)
+		free(file->textures.west);
 }
 
 int	main(int argc, char **argv)
@@ -51,7 +55,7 @@ int	main(int argc, char **argv)
 	init_data(&file);
 	file.fd = open(argv[1], O_RDONLY);
 	if (file.fd < 0)
-		error("Can't open file");
+		error("Can't open file.");
 	line = get_next_line(file.fd);
 	while (line)
 	{
@@ -62,7 +66,8 @@ int	main(int argc, char **argv)
 		line = get_next_line(file.fd);
 	}
 	if (file.textures.count != 6) {
-		error("missing texture(s)");
+		free_all(&file);
+		error("missing texture(s).");
 	}
 	printf("texture north: %s\n", file.textures.north);
 	printf("texture south: %s\n", file.textures.south);
