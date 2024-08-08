@@ -6,13 +6,39 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 21:40:25 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/08 03:25:05 by mflury           ###   ########.fr       */
+/*   Updated: 2024/08/08 04:03:16 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
-// im paid by the char, tbh... xoxo
+// im paid by the char, xoxo
+
+// why would i think if it works fine without thinking?
+
+void	verify_paths(t_file *file)
+{
+	if(open(file->textures.north, O_RDONLY) == -1)
+	{
+		free_all(file);
+		error("north texture not found.");
+	}
+	if(open(file->textures.south, O_RDONLY) == -1)
+	{
+		free_all(file);
+		error("south texture not found.");
+	}
+	if(open(file->textures.east, O_RDONLY) == -1)
+	{
+		free_all(file);
+		error("east texture not found.");
+	}
+	if(open(file->textures.west, O_RDONLY) == -1)
+	{
+		free_all(file);
+		error("west texture not found.");
+	}
+}
 
 void	set_colors(int *tab, char *line)
 {
@@ -56,10 +82,8 @@ char	*set_path(char *line)
 		line[i] == 'W' || line[i] == 'E' || line[i] == 'A' ||
 		line[i] == ' ' || line[i] == '\t')
 		i++;
-	// printf("i: %d,", i);
 	while (line[i + j])
 		j++;
-	// printf("j: %d\n", j);
 	path = malloc(sizeof(char) * (j + 1));
 	while (line[i] && line[i] != '\n' && line[i] != ' ' && line[i] != '\t')
 		path[k++] = line[i++];
@@ -92,6 +116,8 @@ void	line_check(char *line, t_file *file)
 		return ;
 	file->textures.count++;
 }
+
+// i wont turn on my brain! i wont turn on my brain! i wont turn on my brain!
 
 int	path_check(char *map_path)
 {

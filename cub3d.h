@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 06:21:41 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/08 01:28:21 by mflury           ###   ########.fr       */
+/*   Updated: 2024/08/08 03:57:00 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ int		path_check(char *map_path);
 void	line_check(char *line, t_file *file);
 void	set_colors(int *tab, char *line);
 char	*set_path(char *line);
+void	verify_paths(t_file *file);
 
 
 #endif

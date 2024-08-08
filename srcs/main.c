@@ -6,11 +6,13 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 06:21:02 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/08 03:26:23 by mflury           ###   ########.fr       */
+/*   Updated: 2024/08/08 04:06:01 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
+
+// classic init shit...
 
 void	init_data(t_file *file)
 {
@@ -28,6 +30,8 @@ void	init_data(t_file *file)
 	file->textures.ceiling[2] = -1;
 	file->map = NULL;
 }
+
+// I MUST NOT DO THE SO_LONG SHIT AGAIN!!!!!!!!!!!!!!!!!! (lies)
 
 void	free_all(t_file *file)
 {
