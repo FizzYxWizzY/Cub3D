@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 21:40:25 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/08 01:07:46 by mflury           ###   ########.fr       */
+/*   Updated: 2024/08/08 01:49:26 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,16 +56,16 @@ char	*set_path(char *line)
 		line[i] == 'W' || line[i] == 'E' || line[i] == 'A' ||
 		line[i] == ' ' || line[i] == '\t')
 		i++;
-	printf("i: %d,", i);
+	// printf("i: %d,", i);
 	while (line[i + j])
 		j++;
-	printf("j: %d\n", j);
+	// printf("j: %d\n", j);
 	path = malloc(sizeof(char) * (j + 1));
 	while (line[i] && line[i] != '\n')
 		path[k++] = line[i++];
 	path[k] = '\0';
-	printf("line: \"%s\"\n", line);
-	printf("path: \"%s\"\n", path);
+	printf("brut line: \"%s\"\n", line);
+	printf("sanitized path: \"%s\"\n", path);
 	return (path);
 }
 
