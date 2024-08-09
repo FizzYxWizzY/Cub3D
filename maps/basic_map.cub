@@ -1,9 +1,9 @@
-NO ./path_to_the_north_texture
-    SO ./path_to_the_south_texture
-        WE    ./path_to_the_west_texture
+NO ./assets/path_to_the_north_texture.txt
+    SO ./assets/path_to_the_south_texture.txt
+        WE    ./assets/path_to_the_west_texture.txt
 
 
-EA ./path_to_the_east_texture
+EA ./assets/path_to_the_east_texture.txt
 
         F     220,100,0
  C       225,30,0
