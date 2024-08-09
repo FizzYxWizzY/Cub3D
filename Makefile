@@ -6,7 +6,7 @@
 #    By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/17 05:10:37 by mflury            #+#    #+#              #
-#    Updated: 2024/08/05 22:13:52 by mflury           ###   ########.fr        #
+#    Updated: 2024/08/09 09:36:36 by mflury           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,9 @@ else
 endif
 
 SRCS	=	srcs/error.c \
-			srcs/parsing.c \
+			srcs/parsing/parsing.c \
+			srcs/parsing/parsing_textures.c \
+			srcs/parsing/parsing_textures_utils.c \
 			srcs/main.c \
 
 all: $(NAME)

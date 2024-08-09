@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 06:21:41 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/08 03:57:00 by mflury           ###   ########.fr       */
+/*   Updated: 2024/08/09 10:40:11 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,10 @@ typedef struct	s_file
 }				t_file;
 
 void	error(char *msg);
+void	check_args(int argc, char **argv, t_file *file);
 void	init_data(t_file *file);
+void	parse_file(int argc,char **argv,t_file *file);
+void	set_textures(t_file *file);
 void	free_all(t_file *file);
 int		path_check(char *map_path);
 void	line_check(char *line, t_file *file);

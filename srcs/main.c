@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 06:21:02 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/08 04:06:01 by mflury           ###   ########.fr       */
+/*   Updated: 2024/08/09 09:39:10 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,31 +48,12 @@ void	free_all(t_file *file)
 int	main(int argc, char **argv)
 {
 	t_file	file;
-	char	*line;
-	
-	if (argc > 2)
-		error("too much arguments.");
-	if (argc < 2)
-		error("need the map path as argument.");
-	if (path_check(argv[1]) != 0)
-		error("map path is trash.");
+
 	init_data(&file);
-	file.fd = open(argv[1], O_RDONLY);
-	if (file.fd < 0)
-		error("Can't open file.");
-	line = get_next_line(file.fd);
-	while (line)
-	{
-		line_check(line, &file);
-		free(line);
-		if (file.textures.count == 6)
-			break ;
-		line = get_next_line(file.fd);
-	}
-	if (file.textures.count != 6) {
-		free_all(&file);
-		error("missing texture(s).");
-	}
+	parse_file(argc, argv,&file);
+	
+	
+
 	printf("texture north: %s\n", file.textures.north);
 	printf("texture south: %s\n", file.textures.south);
 	printf("texture east: %s\n", file.textures.east);
@@ -80,6 +61,7 @@ int	main(int argc, char **argv)
 	printf("texture floor: [%d,%d,%d]\n", file.textures.floor[0], file.textures.floor[1], file.textures.floor[2]);
 	printf("texture ceiling: [%d,%d,%d]\n",  file.textures.ceiling[0], file.textures.ceiling[1], file.textures.ceiling[2]);
 	printf("texture count: %d\n", file.textures.count);
+	
 	free_all(&file);
 	return EXIT_SUCCESS;
 }
