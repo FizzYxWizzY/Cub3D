@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 06:21:02 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/09 09:39:10 by mflury           ###   ########.fr       */
+/*   Updated: 2024/08/10 05:00:12 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 void	init_data(t_file *file)
 {
 	file->fd = -1;
+	file->mappath = NULL;
 	file->textures.count = 0;
 	file->textures.north = NULL;
 	file->textures.south = NULL;
@@ -29,6 +30,8 @@ void	init_data(t_file *file)
 	file->textures.ceiling[1] = -1;
 	file->textures.ceiling[2] = -1;
 	file->map = NULL;
+	file->maplinecount = 0;
+	file->maxlength = 0;
 }
 
 // I MUST NOT DO THE SO_LONG SHIT AGAIN!!!!!!!!!!!!!!!!!! (lies)
@@ -43,17 +46,18 @@ void	free_all(t_file *file)
 		free(file->textures.east);
 	if (file->textures.west)
 		free(file->textures.west);
+	if (file->mappath)
+		free(file->mappath);
 }
 
 int	main(int argc, char **argv)
 {
 	t_file	file;
 
-	init_data(&file);
-	parse_file(argc, argv,&file);
+	parse_file(argc, argv, &file);
 	
 	
-
+	// TO BE DELETED
 	printf("texture north: %s\n", file.textures.north);
 	printf("texture south: %s\n", file.textures.south);
 	printf("texture east: %s\n", file.textures.east);
@@ -61,7 +65,8 @@ int	main(int argc, char **argv)
 	printf("texture floor: [%d,%d,%d]\n", file.textures.floor[0], file.textures.floor[1], file.textures.floor[2]);
 	printf("texture ceiling: [%d,%d,%d]\n",  file.textures.ceiling[0], file.textures.ceiling[1], file.textures.ceiling[2]);
 	printf("texture count: %d\n", file.textures.count);
-	
+	//
+
 	free_all(&file);
 	return EXIT_SUCCESS;
 }

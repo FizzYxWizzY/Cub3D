@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 06:21:41 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/09 10:40:11 by mflury           ###   ########.fr       */
+/*   Updated: 2024/08/10 04:54:13 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,21 +95,38 @@ typedef struct	s_textures
 typedef struct	s_file
 {
 	int			fd;
+	char		*mappath;
 	t_textures	textures;
 	char		**map;
+	int			maplinecount;
+	int			maxlength;
 }				t_file;
 
+// General Utils:
+
 void	error(char *msg);
-void	check_args(int argc, char **argv, t_file *file);
-void	init_data(t_file *file);
-void	parse_file(int argc,char **argv,t_file *file);
-void	set_textures(t_file *file);
 void	free_all(t_file *file);
+
+// Parsing: 
+
+void	parse_file(int argc,char **argv,t_file *file);
+
+// Texture & Colors:
+
+void	init_data(t_file *file);
+void	check_args(int argc, char **argv, t_file *file);
 int		path_check(char *map_path);
+void	set_textures(t_file *file);
 void	line_check(char *line, t_file *file);
-void	set_colors(int *tab, char *line);
 char	*set_path(char *line);
+void	set_colors(int *tab, char *line);
 void	verify_paths(t_file *file);
 
+// Map:
+
+void	set_map(t_file *file);
+void	set_map_size(t_file *file);
+int		is_map_start(char *line);
+void	fill_map(t_file *file);
 
 #endif

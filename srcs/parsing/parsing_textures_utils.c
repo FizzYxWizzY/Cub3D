@@ -6,19 +6,18 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 08:55:50 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/09 13:22:22 by mflury           ###   ########.fr       */
+/*   Updated: 2024/08/10 02:38:36 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../cub3d.h"
 
-// im paid by the char, xoxo
+// im paid by the character, xoxo <3
 
 // why would i think if it works fine without thinking?
 
 void	verify_paths(t_file *file)
 {
-	printf("TESTING TEXTURE PATH HERE: \n");
 	if(open(file->textures.north, O_RDONLY) == -1)
 	{
 		free_all(file);
