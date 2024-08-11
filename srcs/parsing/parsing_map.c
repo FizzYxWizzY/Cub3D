@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 09:34:38 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/11 06:41:18 by mflury           ###   ########.fr       */
+/*   Updated: 2024/08/12 01:34:11 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,15 @@ int	is_map_start(char *line)
 
 	i = 0;
 	one_count = 0;
+	// printf("is_map_start:\nline: '%s'\n", line);
 	if (line)
 	{
 		if (line[i] == ' ' || line[i] == '1' || line[i] == '0')
 		{
 			while (line[i] == ' ' || line[i] == '1' || line[i] == '0')
 			{
-				if(line[i] == '1')
+				if(line[i++] == '1')
 					one_count++;
-				i++;
 			}
 			if ((line[i] == '\n' || !line[i]) && one_count > 0)
 			{
@@ -75,16 +75,19 @@ void	set_map_size(t_file *file)
 	free(line);
 	close(file->fd);
 	printf("ICI !!!\n");
-
-	file->map = malloc(sizeof(char *) * file->maplinecount + 2);
+	file->map = malloc(sizeof(char *) * (file->maplinecount + 2));
 	file->map[file->maplinecount + 1] = NULL; // PROBLEM HERE !
-	while (i < file->maplinecount + 2)
+	printf("ICI2 !!!\n");
+	while (i < (file->maplinecount + 2))
 	{
-		file->map[i] = malloc(sizeof(char) * file->maxlength + 2);
+		file->map[i] = malloc(sizeof(char) * (file->maxlength + 2));
 		ft_memset(file->map[i], ' ', file->maxlength + 2);
-		file->map[i][file->maxlength + 1] = '\0';
-		++i;
+		file->map[i++][file->maxlength + 1] = '\0';
 	}
+	fill_map(file);
+	i = 0;
+	while (i < (file->maplinecount + 2))
+		printf("map: '%s'\n", file->map[i++]);	
 }
 
 void fill_map(t_file *file)
@@ -96,20 +99,28 @@ void fill_map(t_file *file)
 	i = 1;
 	j = 0;
 	line = NULL;
-	open(file->mappath, O_RDONLY);
+	printf("fd: %d\n", file->fd);
+	file->fd = open(file->mappath, O_RDONLY);
+	printf("fd: %d\n", file->fd);
 	while (!is_map_start(line))
-		get_next_line(file->fd);
+	{
+		free(line);
+		line = get_next_line(file->fd);
+	}
 	while (line)
 	{
 		while (line[j])
 		{
-			file->map[i][j + 1] = line[j];
+			if (line[j] != '\n')
+				file->map[i][j + 1] = line[j];
 			++j;
 		}
 		++i;
 		j = 0;
-		get_next_line(file->fd);
+		free(line);
+		line = get_next_line(file->fd);
 	}
+	free(line);
 }
 
 void	set_map(t_file *file)

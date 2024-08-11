@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 06:21:02 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/10 22:31:23 by mflury           ###   ########.fr       */
+/*   Updated: 2024/08/12 01:42:05 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,12 @@ int	main(int argc, char **argv)
 	// printf("texture ceiling: [%d,%d,%d]\n",  file.textures.ceiling[0], file.textures.ceiling[1], file.textures.ceiling[2]);
 	// printf("texture count: %d\n", file.textures.count);
 	//
+	int i = 0;
+	while (i < (file.maplinecount + 2))
+	{
+		free(file.map[i++]);
+	}
+	free(file.map);
 
 	free_all(&file);
 	return EXIT_SUCCESS;
