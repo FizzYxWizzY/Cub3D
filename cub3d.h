@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 06:21:41 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/10 04:54:13 by mflury           ###   ########.fr       */
+/*   Updated: 2024/08/10 16:55:12 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ typedef struct	s_file
 	t_textures	textures;
 	char		**map;
 	int			maplinecount;
-	int			maxlength;
+	size_t		maxlength;
 }				t_file;
 
 // General Utils:

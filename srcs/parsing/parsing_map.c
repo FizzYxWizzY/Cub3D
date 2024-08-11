@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 09:34:38 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/10 05:02:36 by mflury           ###   ########.fr       */
+/*   Updated: 2024/08/11 06:41:18 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,40 @@ int	is_map_start(char *line)
 
 	i = 0;
 	one_count = 0;
-	while (line[i] && line[i] != '\n')
+	if (line)
 	{
-		if (line[i] != ' ' || line[i] != '1')
-			return 0;
-		if ( line[i] == '1')
-			++one_count;
-		++i;
+		if (line[i] == ' ' || line[i] == '1' || line[i] == '0')
+		{
+			while (line[i] == ' ' || line[i] == '1' || line[i] == '0')
+			{
+				if(line[i] == '1')
+					one_count++;
+				i++;
+			}
+			if ((line[i] == '\n' || !line[i]) && one_count > 0)
+			{
+				printf("map start found!\n");
+				return 1;
+			}
+		}
 	}
-	if (one_count > 0)
-		return 1;
 	return 0;
+}
+
+char	*find_map_start(t_file *file)
+{
+	char	*line;
+
+	line = NULL;
+	line = get_next_line(file->fd);
+	while (!is_map_start(line))
+	{
+		free(line);
+		line = get_next_line(file->fd);
+		if (!line)
+			break;
+	}
+	return line;
 }
 
 void	set_map_size(t_file *file)
@@ -40,19 +63,21 @@ void	set_map_size(t_file *file)
 	char	*line;
 
 	i = 0;
-	line = NULL;
-	while (!is_map_start(line))
-		get_next_line(file->fd);
+	line = find_map_start(file); // OK 'til here.
 	while (line)
 	{
 		if (ft_strlen(line) > file->maxlength)
 			file->maxlength = ft_strlen(line);
 		++file->maplinecount;
-		get_next_line(file->fd);
+		free(line);
+		line = get_next_line(file->fd);
 	}
+	free(line);
 	close(file->fd);
+	printf("ICI !!!\n");
+
 	file->map = malloc(sizeof(char *) * file->maplinecount + 2);
-	file->map[file->maplinecount + 1] = '\0';
+	file->map[file->maplinecount + 1] = NULL; // PROBLEM HERE !
 	while (i < file->maplinecount + 2)
 	{
 		file->map[i] = malloc(sizeof(char) * file->maxlength + 2);
@@ -77,13 +102,15 @@ void fill_map(t_file *file)
 	while (line)
 	{
 		while (line[j])
-			file->map[i][j + 1] = line[j++];
+		{
+			file->map[i][j + 1] = line[j];
+			++j;
+		}
 		++i;
 		j = 0;
 		get_next_line(file->fd);
 	}
 }
-
 
 void	set_map(t_file *file)
 {

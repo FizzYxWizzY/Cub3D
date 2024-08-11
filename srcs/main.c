@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 06:21:02 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/10 05:00:12 by mflury           ###   ########.fr       */
+/*   Updated: 2024/08/10 22:31:23 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,23 @@ int	main(int argc, char **argv)
 
 	parse_file(argc, argv, &file);
 	
+	// int i = 0;
+	// while (file.map[i])
+	// {
+	// 	printf("%s\n", file.map[i]);
+	// 	free(file.map[i]);
+	// 	++i;
+	// }
+	// free(file.map);
 	
 	// TO BE DELETED
-	printf("texture north: %s\n", file.textures.north);
-	printf("texture south: %s\n", file.textures.south);
-	printf("texture east: %s\n", file.textures.east);
-	printf("texture west: %s\n", file.textures.west);
-	printf("texture floor: [%d,%d,%d]\n", file.textures.floor[0], file.textures.floor[1], file.textures.floor[2]);
-	printf("texture ceiling: [%d,%d,%d]\n",  file.textures.ceiling[0], file.textures.ceiling[1], file.textures.ceiling[2]);
-	printf("texture count: %d\n", file.textures.count);
+	// printf("texture north: %s\n", file.textures.north);
+	// printf("texture south: %s\n", file.textures.south);
+	// printf("texture east: %s\n", file.textures.east);
+	// printf("texture west: %s\n", file.textures.west);
+	// printf("texture floor: [%d,%d,%d]\n", file.textures.floor[0], file.textures.floor[1], file.textures.floor[2]);
+	// printf("texture ceiling: [%d,%d,%d]\n",  file.textures.ceiling[0], file.textures.ceiling[1], file.textures.ceiling[2]);
+	// printf("texture count: %d\n", file.textures.count);
 	//
 
 	free_all(&file);

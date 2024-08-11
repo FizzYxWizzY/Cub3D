@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 09:32:42 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/10 04:59:32 by mflury           ###   ########.fr       */
+/*   Updated: 2024/08/10 15:20:36 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,10 @@ void	check_args(int argc, char **argv, t_file *file)
 		error("Can't open file.");
 	file->mappath = malloc(sizeof(char) * ft_strlen(argv[1]) + 1);
 	while (argv[1][i])
-		file->mappath[i] = argv[1][i++];
+	{
+		file->mappath[i] = argv[1][i];
+		++i;
+	}
 	file->mappath[i] = '\0';
 }
 
