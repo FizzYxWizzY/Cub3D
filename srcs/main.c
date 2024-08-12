@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 06:21:02 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/12 01:58:54 by mflury           ###   ########.fr       */
+/*   Updated: 2024/08/12 02:06:33 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ void	free_all(t_file *file)
 		free(file->map[i++]);
 	free(file->map);
 }
+
+// Yay! parsing is almost done! :D  ...and i still have to do render shit T_T ARTHUUUUUUR WHY T_T
 
 int	main(int argc, char **argv)
 {
