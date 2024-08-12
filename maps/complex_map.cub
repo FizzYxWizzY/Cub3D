@@ -5,7 +5,7 @@ NO ./assets/path_to_the_north_texture.txt
         WE    ./assets/path_to_the_west_texture.txt
 
 
-EA ./assets/path_to_the_east_texture.txt
+EA ./assets/path_to_the_eabvst_texture.txt
 
         F     220,100,0
  C       225,30,0

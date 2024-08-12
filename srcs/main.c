@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 06:21:02 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/12 01:42:05 by mflury           ###   ########.fr       */
+/*   Updated: 2024/08/12 01:58:54 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,9 @@ void	init_data(t_file *file)
 
 void	free_all(t_file *file)
 {
+	int	i;
+
+	i = 0;
 	if (file->textures.north)
 		free(file->textures.north);
 	if (file->textures.south)
@@ -48,6 +51,11 @@ void	free_all(t_file *file)
 		free(file->textures.west);
 	if (file->mappath)
 		free(file->mappath);
+	if (!file->map)
+		return;
+	while (i < (file->maplinecount + 2))
+		free(file->map[i++]);
+	free(file->map);
 }
 
 int	main(int argc, char **argv)
@@ -55,15 +63,6 @@ int	main(int argc, char **argv)
 	t_file	file;
 
 	parse_file(argc, argv, &file);
-	
-	// int i = 0;
-	// while (file.map[i])
-	// {
-	// 	printf("%s\n", file.map[i]);
-	// 	free(file.map[i]);
-	// 	++i;
-	// }
-	// free(file.map);
 	
 	// TO BE DELETED
 	// printf("texture north: %s\n", file.textures.north);
@@ -74,12 +73,6 @@ int	main(int argc, char **argv)
 	// printf("texture ceiling: [%d,%d,%d]\n",  file.textures.ceiling[0], file.textures.ceiling[1], file.textures.ceiling[2]);
 	// printf("texture count: %d\n", file.textures.count);
 	//
-	int i = 0;
-	while (i < (file.maplinecount + 2))
-	{
-		free(file.map[i++]);
-	}
-	free(file.map);
 
 	free_all(&file);
 	return EXIT_SUCCESS;
