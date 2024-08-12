@@ -6,11 +6,29 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 06:21:02 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/12 02:06:33 by mflury           ###   ########.fr       */
+/*   Updated: 2024/08/12 02:43:29 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
+
+// PARSER:
+// 		1. verify map path.
+// 		2. init the path of each texture and color.
+// 		3. verify that all the texture path are openable and the color are in range (0,255).
+// 		4. find the start of the map.
+// 		5. measure the map.
+// 		6. malloc map size and fill it with ' '.
+//		7. copy map from file to the array (with a border of 1 all around the map).
+// 
+// 
+
+
+
+
+
+
+
 
 // classic init shit...
 

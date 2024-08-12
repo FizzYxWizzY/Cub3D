@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 09:34:38 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/12 01:34:11 by mflury           ###   ########.fr       */
+/*   Updated: 2024/08/12 02:48:16 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	set_map_size(t_file *file)
 	char	*line;
 
 	i = 0;
-	line = find_map_start(file); // OK 'til here.
+	line = find_map_start(file);
 	while (line)
 	{
 		if (ft_strlen(line) > file->maxlength)
@@ -74,20 +74,14 @@ void	set_map_size(t_file *file)
 	}
 	free(line);
 	close(file->fd);
-	printf("ICI !!!\n");
 	file->map = malloc(sizeof(char *) * (file->maplinecount + 2));
-	file->map[file->maplinecount + 1] = NULL; // PROBLEM HERE !
-	printf("ICI2 !!!\n");
+	file->map[file->maplinecount + 1] = NULL;
 	while (i < (file->maplinecount + 2))
 	{
 		file->map[i] = malloc(sizeof(char) * (file->maxlength + 2));
 		ft_memset(file->map[i], ' ', file->maxlength + 2);
 		file->map[i++][file->maxlength + 1] = '\0';
 	}
-	fill_map(file);
-	i = 0;
-	while (i < (file->maplinecount + 2))
-		printf("map: '%s'\n", file->map[i++]);	
 }
 
 void fill_map(t_file *file)
@@ -99,9 +93,7 @@ void fill_map(t_file *file)
 	i = 1;
 	j = 0;
 	line = NULL;
-	printf("fd: %d\n", file->fd);
 	file->fd = open(file->mappath, O_RDONLY);
-	printf("fd: %d\n", file->fd);
 	while (!is_map_start(line))
 	{
 		free(line);
@@ -125,6 +117,10 @@ void fill_map(t_file *file)
 
 void	set_map(t_file *file)
 {
+	int	i;
 	set_map_size(file);
 	fill_map(file);
+	i = 0;
+	while (i < (file->maplinecount + 2))
+		printf("map: '%s'\n", file->map[i++]);	
 }
