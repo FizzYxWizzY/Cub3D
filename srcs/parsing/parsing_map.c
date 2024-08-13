@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 09:34:38 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/12 02:58:20 by mflury           ###   ########.fr       */
+/*   Updated: 2024/08/13 18:50:08 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,4 +115,10 @@ void	set_map(t_file *file)
 {
 	set_map_size(file);
 	fill_map(file);
+	if (!is_valid_char_only(file))
+	{
+		free_all(file);
+		error("invalid char in map.");
+	}
+	is_closed_map(file);
 }

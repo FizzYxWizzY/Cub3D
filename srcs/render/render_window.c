@@ -6,13 +6,18 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 02:09:18 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/13 04:15:26 by mflury           ###   ########.fr       */
+/*   Updated: 2024/08/13 22:13:02 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../cub3d.h"
 
 // x = horizontal y = vertical.
+
+// void	print_minimap(t_mlx *mlx, t_file *file)
+// {
+	
+// }
 
 void	create_window(t_mlx *mlx, t_file *file)
 {

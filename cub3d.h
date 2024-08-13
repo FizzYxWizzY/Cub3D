@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 06:21:41 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/13 03:10:43 by mflury           ###   ########.fr       */
+/*   Updated: 2024/08/13 20:30:06 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,8 +136,16 @@ void	set_map(t_file *file);
 void	set_map_size(t_file *file);
 int		is_map_start(char *line);
 void	fill_map(t_file *file);
+int		is_valid_char_only(t_file *file);
+void	is_closed_map(t_file *file);
+char	**copy_map(t_file *file);
+size_t	get_start_x(char **map, t_file *file);
+int		get_start_y(char **map, t_file *file);
+void	floodfill(char **map, t_file *file, size_t x, int y);
+void	free_copy(char **map, t_file *file);
 
 // Render:
+
 void	create_window(t_mlx *mlx, t_file *file);
 
 #endif
