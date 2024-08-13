@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 06:21:02 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/12 02:43:29 by mflury           ###   ########.fr       */
+/*   Updated: 2024/08/13 03:09:41 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,10 @@ void	free_all(t_file *file)
 int	main(int argc, char **argv)
 {
 	t_file	file;
+	t_mlx	mlx;
 
 	parse_file(argc, argv, &file);
-	
+	create_window(&mlx, &file);
 	// TO BE DELETED
 	// printf("texture north: %s\n", file.textures.north);
 	// printf("texture south: %s\n", file.textures.south);
