@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 06:21:41 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/13 20:30:06 by mflury           ###   ########.fr       */
+/*   Updated: 2024/08/18 04:16:55 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,12 @@ typedef struct	s_file
 	size_t		maxlength;
 }				t_file;
 
+typedef struct	s_player
+{
+	size_t x;
+	int y;
+}				t_player;
+
 // General Utils:
 
 void	error(char *msg);
@@ -137,15 +143,20 @@ void	set_map_size(t_file *file);
 int		is_map_start(char *line);
 void	fill_map(t_file *file);
 int		is_valid_char_only(t_file *file);
+void	start_count(t_file *file);
 void	is_closed_map(t_file *file);
 char	**copy_map(t_file *file);
 size_t	get_start_x(char **map, t_file *file);
 int		get_start_y(char **map, t_file *file);
-void	floodfill(char **map, t_file *file, size_t x, int y);
+int		floodfill(char **map, t_file *file, size_t x, int y);
 void	free_copy(char **map, t_file *file);
+
+// Moves:
+int	keeb_listener(int keycode, t_mlx *mlx, t_file *file, t_player *player);
 
 // Render:
 
+void	mlx_put_pixel_to_image(t_mlx *mlx, int x, int y, int color);
 void	create_window(t_mlx *mlx, t_file *file);
 
 #endif

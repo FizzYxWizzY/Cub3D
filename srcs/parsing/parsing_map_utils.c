@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 08:56:22 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/13 20:05:38 by mflury           ###   ########.fr       */
+/*   Updated: 2024/08/16 01:26:54 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,19 +68,24 @@ char	**copy_map(t_file *file)
 	return copy;
 }
 
-void	floodfill(char **map, t_file *file, size_t x, int y)
+int	floodfill(char **map, t_file *file, size_t x, int y)
 {
 	if (map[y][x] == '1' || map[y][x] == ' ')
 	{
 		if (map[y][x] == ' ')
+		{
+			map[y][x] = '?';
 			printf("map fucked up. (map[%d][%ld])\n", y, x);
-		return ;
+			return 1;
+		}
+		return 0;
 	}
 	map[y][x] = '1';
 	floodfill(map, file, x + 1, y);
 	floodfill(map, file, x, y + 1);
 	floodfill(map, file, x - 1, y);
 	floodfill(map, file, x, y - 1);
+	return 0;
 }
 
 size_t	get_start_x(char **map, t_file *file)
@@ -167,7 +172,12 @@ void	is_closed_map(t_file *file)
 		free_all(file);
 		error("cant find start player y for floodfill.");
 	}
-	floodfill(map, file, x, y);
+	if (floodfill(map, file, x, y))
+	{
+		free_copy(map, file);
+		free_all(file);
+		return;
+	}
 	print_map_copy(map, file); // should not go in prod.
 	free_copy(map, file);
 }

@@ -6,12 +6,40 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 09:34:38 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/13 18:50:08 by mflury           ###   ########.fr       */
+/*   Updated: 2024/08/16 01:29:30 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../cub3d.h"
 
+
+void	start_count(t_file *file)
+{
+	int	count;
+	size_t x;
+	int y;
+
+	count = 0;
+	x = 0;
+	y = 0;
+	while (y < file->maplinecount + 2)
+	{
+		while (x < file->maxlength + 2)
+		{
+			if (file->map[y][x] == 'N' || file->map[y][x] == 'S'
+				|| file->map[y][x] == 'E' || file->map[y][x] == 'W')
+				++count;
+			++x;
+		}
+		++y;
+		x = 0;
+	}
+	if (count != 1)
+	{
+		free_all(file);
+		error("it needs to only have one starting position on the map.");
+	}
+}
 
 //  look if its the 1st line of the map.
 int	is_map_start(char *line)
@@ -23,9 +51,12 @@ int	is_map_start(char *line)
 	one_count = 0;
 	if (line)
 	{
-		if (line[i] == ' ' || line[i] == '1' || line[i] == '0')
+		if (line[i] == ' ' || line[i] == '1' || line[i] == '0' || line[i] == 'N'
+			|| line[i] == 'S' || line[i] == 'E' || line[i] == 'W')
 		{
-			while (line[i] == ' ' || line[i] == '1' || line[i] == '0')
+			while (line[i] == ' ' || line[i] == '1' || line[i] == '0'
+				|| line[i] == 'N' || line[i] == 'S' || line[i] == 'E'
+				|| line[i] == 'W')
 			{
 				if(line[i++] == '1')
 					one_count++;
@@ -120,5 +151,6 @@ void	set_map(t_file *file)
 		free_all(file);
 		error("invalid char in map.");
 	}
+	start_count(file);
 	is_closed_map(file);
 }

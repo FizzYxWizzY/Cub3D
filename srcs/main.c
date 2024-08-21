@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 06:21:02 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/14 00:46:37 by mflury           ###   ########.fr       */
+/*   Updated: 2024/08/18 04:25:15 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,11 @@
 
 
 
-
+// void	init_player(t_player *p, t_file *file)
+// {
+// 	p->x = get_start_x(map, file);
+// 	p->y = get_start_y(map, file);
+// }
 
 // classic init shit...
 
@@ -82,9 +86,12 @@ int	main(int argc, char **argv)
 {
 	t_file	file;
 	t_mlx	mlx;
+	// t_player player;
 
 	parse_file(argc, argv, &file);
+	// init_player(&player);
 	create_window(&mlx, &file);
+
 	// TO BE DELETED
 	// printf("texture north: %s\n", file.textures.north);
 	// printf("texture south: %s\n", file.textures.south);
@@ -94,7 +101,7 @@ int	main(int argc, char **argv)
 	// printf("texture ceiling: [%d,%d,%d]\n",  file.textures.ceiling[0], file.textures.ceiling[1], file.textures.ceiling[2]);
 	// printf("texture count: %d\n", file.textures.count);
 	//
-	mlx_destroy_image(mlx.mlx, mlx.mlx_win);
+	// mlx_destroy_image(mlx.mlx, mlx.mlx_win);
 	mlx_destroy_window(mlx.mlx, mlx.mlx_win);
 	free_all(&file);
 	return EXIT_SUCCESS;

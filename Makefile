@@ -6,7 +6,7 @@
 #    By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/17 05:10:37 by mflury            #+#    #+#              #
-#    Updated: 2024/08/13 02:12:55 by mflury           ###   ########.fr        #
+#    Updated: 2024/08/18 04:11:22 by mflury           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,8 @@ SRCS	=	srcs/error.c \
 			srcs/parsing/parsing_map.c \
 			srcs/parsing/parsing_map_utils.c \
 			srcs/render/render_window.c \
+			srcs/render/mlx_put_pixel_to_image.c \
+			srcs/moves/keeb_listener.c \
 			srcs/main.c \
 
 all: $(NAME)
