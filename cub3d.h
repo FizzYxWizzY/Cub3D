@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 06:21:41 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/22 02:01:54 by mflury           ###   ########.fr       */
+/*   Updated: 2024/08/22 13:44:41 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,5 +159,6 @@ int	keeb_listener(int keycode, t_mlx *mlx, t_file *file, t_player *player);
 void	mlx_put_pixel_to_image(t_mlx *mlx, int x, int y, int color);
 void	create_window(t_mlx *mlx, t_file *file);
 void	draw_minimap(t_mlx *mlx, t_file *file);
+void	draw_background(t_mlx *mlx);
 
 #endif
