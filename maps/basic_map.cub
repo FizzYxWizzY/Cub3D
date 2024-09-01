@@ -1,12 +1,12 @@
-NO ./assets/path_to_the_north_texture.txt
+NO ./assets/path_to_the_north_texture.txt    pelo
     SO ./assets/path_to_the_south_texture.txt
         WE    ./assets/path_to_the_west_texture.txt
 
 
 EA ./assets/path_to_the_east_texture.txt
 
-        F     220,100,0
- C       225,30,0
+        F     0,255,0
+ C       0,0,255
 
 je
    suis

@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 06:21:02 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/22 14:05:04 by mflury           ###   ########.fr       */
+/*   Updated: 2024/09/02 00:39:36 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,11 @@ void	init_data(t_file *file)
 	file->textures.floor[0] = -1;
 	file->textures.floor[1] = -1;
 	file->textures.floor[2] = -1;
+	file->textures.trgb_floor = 0;
 	file->textures.ceiling[0] = -1;
 	file->textures.ceiling[1] = -1;
 	file->textures.ceiling[2] = -1;
+	file->textures.trgb_ceiling = 0;
 	file->map = NULL;
 	file->maplinecount = 0;
 	file->maxlength = 0;
@@ -89,11 +91,12 @@ int	main(int argc, char **argv)
 	// t_player player;
 
 	parse_file(argc, argv, &file);
+	set_trgb_all(&file);
 	// init_player(&player);
 	create_window(&mlx, &file);
-	// draw_background(&mlx);
-	draw_minimap(&mlx, &file);
-	
+	draw_background(&mlx, &file);
+	// draw_minimap(&mlx, &file);
+	// draw_bg(&mlx);
 	// TO BE DELETED
 	// printf("texture north: %s\n", file.textures.north);
 	// printf("texture south: %s\n", file.textures.south);
@@ -103,10 +106,12 @@ int	main(int argc, char **argv)
 	// printf("texture ceiling: [%d,%d,%d]\n",  file.textures.ceiling[0], file.textures.ceiling[1], file.textures.ceiling[2]);
 	// printf("texture count: %d\n", file.textures.count);
 	//
-
-	// mlx_destroy_image(mlx.mlx, mlx.mlx_win);
+	mlx_do_key_autorepeaton(mlx.mlx);
+	mlx_hook(mlx.mlx_win, ON_KEYDOWN, (1L<<0), keeb_listener, &file);
 	mlx_loop(mlx.mlx);
-	mlx_destroy_window(mlx.mlx, mlx.mlx_win);
+	mlx_clear_window(mlx.mlx, mlx.mlx_win);
+	// mlx_destroy_image(mlx.mlx, mlx.mlx_win);
+	// mlx_destroy_window(mlx.mlx, mlx.mlx_win);
 	free_all(&file);
 	return EXIT_SUCCESS;
 }

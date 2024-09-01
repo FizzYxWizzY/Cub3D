@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 06:21:41 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/22 13:44:41 by mflury           ###   ########.fr       */
+/*   Updated: 2024/09/01 13:34:50 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,9 @@ typedef struct	s_textures
 	char		*west;
 	char		*east;
 	int			floor[3];
+	int			trgb_floor;
 	int			ceiling[3];
+	int			trgb_ceiling;
 }				t_textures;
 
 typedef struct	s_file
@@ -152,13 +154,18 @@ int		floodfill(char **map, t_file *file, size_t x, int y);
 void	free_copy(char **map, t_file *file);
 
 // Moves:
-int	keeb_listener(int keycode, t_mlx *mlx, t_file *file, t_player *player);
+
+int	keeb_listener(int keycode, t_mlx *mlx, t_file *file);
 
 // Render:
 
 void	mlx_put_pixel_to_image(t_mlx *mlx, int x, int y, int color);
+int		create_trgb(int r, int g, int b);
+void	set_trgb_all(t_file *file);
 void	create_window(t_mlx *mlx, t_file *file);
 void	draw_minimap(t_mlx *mlx, t_file *file);
-void	draw_background(t_mlx *mlx);
+void	draw_background(t_mlx *mlx, t_file *file);
+
+// void	draw_bg(t_mlx *mlx);
 
 #endif
