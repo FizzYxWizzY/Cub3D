@@ -31,7 +31,8 @@ void	drawWalls(t_data *data, double dist, double angle)
 	int		y;
 
 	angle = checkAngle(data->player.rA - angle);
-    lineH = (data->map.sizeWall * sHeight) / (dist * cos(angle)); // taille du mur a dessiner
+	dist = dist * cos(angle);
+    lineH = (data->map.sizeWall * sHeight) / (dist); // taille du mur a dessiner
 	if (lineH > sHeight)
 		lineH = sHeight;
 	lineO = sHeight / 2 - lineH / 2;
@@ -53,7 +54,7 @@ void	drawSky(t_data *data)
 	while (++y < sHeight / 2)
 	{
 		while (++x < sWidth)
-			my_mlx_pixel_put(data, x, y, 0x77B5FE);
+			my_mlx_pixel_put(data, x, y, 0x0077B5FE);
 		x = -1;
 	}
 }
@@ -68,7 +69,7 @@ void	drawGround(t_data *data)
 	while (++y < sHeight)
 	{
 		while (++x < sWidth)
-			my_mlx_pixel_put(data, x, y, 0xADFF2F);
+			my_mlx_pixel_put(data, x, y, 0x00ADFF2F);
 		x = -1;
 	}
 }

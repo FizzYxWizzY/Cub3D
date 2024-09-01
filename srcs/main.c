@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abourgue <abourgue@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 06:21:02 by mflury            #+#    #+#             */
-/*   Updated: 2024/03/23 15:20:45 by abourgue         ###   ########.fr       */
+/*   Updated: 2024/08/31 16:30:01 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,11 @@
 
 // ARTHUR partie ====================================================
 
+int cclose()
+{
+	exit(0);
+}
+
 int	main(void)
 {
 	t_data	img;
@@ -69,13 +74,15 @@ int	main(void)
 	initPlayerStruct(&img.player);
 	img.win = mlx_new_window(img.mlx, sWidth, sHeight, "Hello world!");
 	drawScene(&img);
-	mlx_hook(img.win, 2, 2, key_hook, &img);
+	// mlx_hook(img.win, ON_KEYDOWN, 2, key_hook, &img);
+	mlx_key_hook(img.win, key_hook, &img);
+	mlx_hook(img.win, ON_DESTROY, 0, cclose, &img); // redcross close
 	mlx_loop(img.mlx);
 }
 
 int	key_hook(int keycode, t_data *data)
 {
-	if (keycode == 53)
+	if (keycode == KEY_ESC)
 		exit(0);
 	rotateView(data, keycode);
 	data->player.dirX = cos(data->player.rA) * 2 ; // détermine la direction en x et (* 2) augment la vitesse

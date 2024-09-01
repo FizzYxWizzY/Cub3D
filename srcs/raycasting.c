@@ -8,15 +8,15 @@ void	raycasting(t_data *data)
 
     drawSky(data);
 	drawGround(data);
-	angle = checkAngle(data->player.rA - DR * 45); // set l'angle a -45 pour le premier rayon
+	angle = checkAngle(data->player.rA - DR * 30); // set l'angle a -30 pour le premier rayon
 	x = 0;
 	data->player.rI = sWidth;
 	while (x < sWidth)
 	{
 		dist = rayDist(data, &data->ray, angle); // calcul la distance du rayon
         drawWalls(data, dist, angle); // déssine le mur
-        data->player.rI += 1 ; // position x du rayon
-		angle += 90 * DR / sWidth;
+        data->player.rI += 1; // position x du rayon
+		angle += 60 * DR / sWidth;
 		checkAngle(angle);
 		x += 1;
 	}

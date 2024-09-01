@@ -2,13 +2,13 @@
 
 void rotateView(t_data *data, int keycode)
 {
-	if (keycode == 2)
+	if (keycode == KEY_D)
 	{
 		data->player.rA += 0.1; // tourner
 		if (data->player.rA > 2 * M_PI)
 			data->player.rA -= 2 * M_PI;
 	}
-	else if (keycode == 0)
+	else if (keycode == KEY_A)
 	{
 		data->player.rA -= 0.1;
 		if (data->player.rA < 0)
@@ -18,7 +18,7 @@ void rotateView(t_data *data, int keycode)
 
 void	move(t_data *data, int keycode)
 {
-	if (keycode == 13) // avancer
+	if (keycode == KEY_W) // avancer
 	{
 		if (!checkWall(data, &data->ray, data->player.rA, 0))
 		{
@@ -26,7 +26,7 @@ void	move(t_data *data, int keycode)
 			data->player.y += data->player.dirY;
 		}
 	}
-	if (keycode == 1) // reculer
+	if (keycode == KEY_S) // reculer
 	{
 		if (!checkWall(data, &data->ray, data->player.rA, 1))
 		{

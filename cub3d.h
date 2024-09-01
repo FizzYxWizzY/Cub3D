@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abourgue <abourgue@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 06:21:41 by mflury            #+#    #+#             */
-/*   Updated: 2024/03/23 15:31:26 by abourgue         ###   ########.fr       */
+/*   Updated: 2024/08/31 16:19:02 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@
 #include "./minilibx/linux/mlx.h"
 
 # endif
-
 
 # ifdef __APPLE__
 enum e_keys
@@ -82,9 +81,10 @@ enum e_events
 };
 # endif
 
-#define sWidth 1920
-#define sHeight 1080
+#define sWidth 1366
+#define sHeight 768
 #define DR 0.0174533
+#define M_PI 3.14159265358979323846
 
 typedef struct	s_textures
 {

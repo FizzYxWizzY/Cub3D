@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/31 14:35:58 by mflury            #+#    #+#             */
+/*   Updated: 2024/08/31 14:36:11 by mflury           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../cub3d.h"
 
 int copyIntTbl(t_map *map, int tbl[24][24])
@@ -37,8 +49,8 @@ int copyIntTbl(t_map *map, int tbl[24][24])
 double checkAngle(double angle)
 {
 	if (angle < 0)
-        angle += 2 * M_PI;
-    else if (angle > 2 * M_PI)
-        angle -= 2 * M_PI;
-	return (angle);
+    	angle += 2 * M_PI;
+	if (angle > 2 * M_PI)
+    	angle -= 2 * M_PI;
+	return angle;
 }
