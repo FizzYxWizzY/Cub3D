@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 23:00:43 by mflury            #+#    #+#             */
-/*   Updated: 2024/09/02 00:33:00 by mflury           ###   ########.fr       */
+/*   Updated: 2024/09/02 02:11:02 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,31 +46,47 @@ int main()
 {
   double  posX;
   double  posY;  //x and y start position
+  
   double  dirX;
   double  dirY; //initial direction vector
+  
   double planeX;
   double planeY;
+  
   int w;
   int x;
+  
   double cameraX;
   double rayDirX;
   double rayDirY;
+  
   int mapX;
   int mapY;
+  
   double sideDistX;
   double sideDistY;
+  
   double deltaDistX;
   double deltaDistY;
+  
   double perpWallDist;
+  
   int stepX;
   int stepY;
+  
   int hit;
   int side;
+  
   int lineHeight;
+  
   int h;
+  
   int drawStart;
   int drawEnd;
+  
   int color;
+  
+  int finish; // trying to replace done()
 
 
   posX = 22;
@@ -83,9 +99,9 @@ int main()
   x = 0;
   hit = 0;
   h = 480; // GUESS: screenHigth
-
+  finish = 0;
   // the gameloop starts, this is the loop that draws a whole frame and reads the input every time.
-  while(/*frame not finished*/)
+  while(!finish)
   {
     while (x < w)
     {
@@ -199,8 +215,7 @@ int main()
 
       ++x;
     }
-
-
+    finish = 1;
   }
 
 }
