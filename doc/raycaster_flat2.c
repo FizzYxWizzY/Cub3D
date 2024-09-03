@@ -220,182 +220,82 @@ void  calc_dist(t_casting *r)
     r->drawEnd = screenHeight - 1;
 }
 
+void  init_mlx(t_mlx *mlx)
+{
+  mlx->mlx = mlx_init();
+  mlx->mlx_win = mlx_new_window(mlx->mlx, screenWidth, screenHeight, "Cub3D");
+  mlx->img = mlx_new_image(mlx->mlx, screenWidth, screenHeight);
+  mlx->addr = mlx_get_data_addr(mlx->img, &mlx->bits_per_pixel, &mlx->line_length, &mlx->endian);
+}
+
+void	draw_background(t_mlx *mlx)
+{
+	int		y;
+	size_t	x;
+
+	y = 0;
+	x = 0;
+	while (y < 480)
+	{
+		while (y < 480)
+		{
+			while (x < 640)
+			{
+				if (y < (480 / 2))
+					mlx_put_pixel_to_image(mlx, x++, y, 0x0004D6FF);
+				else
+					mlx_put_pixel_to_image(mlx, x++, y, 0x0000D40E);
+			}
+			x = 0;
+			++y;
+		}
+	}
+}
+
+void  frame_maker(t_mlx *mlx, t_casting *r, int worldMap[mapHeight][mapWidth])
+{
+  draw_background(mlx);
+  r->x = 0;
+  while (r->x < screenWidth)
+  {
+    init_casting_loop(r);
+    dda(r, worldMap);
+    calc_dist(r);
+    if(r->side == 1)
+      r->color = 0x000000ff;
+    else
+      r->color = 0x00ff0000;
+    draw_column_to_img(mlx, r->x, r->drawStart, r->drawEnd, r->color);
+    ++r->x;
+  }
+  mlx_put_image_to_window(mlx->mlx, mlx->mlx_win, mlx->img, 0, 0);
+}
+
 int main(/*int argc, char **argv*/)
 {
   t_mlx     mlx;
   t_casting r;
 
-  // double posX = 22;
-  // double posY = 12;  //x and y start position
-  // double dirX = -1;
-  // double dirY = 0; //initial direction vector
-  // double planeX = 0;
-  // double planeY = 0.666; //the 2d raycaster version of camera plane
-
-  // int x;
-  // double cameraX;
-  // double rayDirX;
-  // double rayDirY;
-  // int mapX;
-  // int mapY;
-  // double sideDistX;
-  // double sideDistY;
-  // double deltaDistX;
-  // double deltaDistY;
-  // double perpWallDist;
-  // int stepX;
-  // int stepY;
-  // int hit;
-  // int side;
-  // int lineHeight;
-  // int drawStart;
-  // int drawEnd;
-  // int color;
-
-
-  // screen(screenWidth, screenHeight, 0, "Raycaster");
-  mlx.mlx = mlx_init();
-  mlx.mlx_win = mlx_new_window(mlx.mlx, screenWidth, screenHeight, "Cub3D");
-  mlx.img = mlx_new_image(mlx.mlx, screenWidth, screenHeight);
-  mlx.addr = mlx_get_data_addr(mlx.img, &mlx.bits_per_pixel, &mlx.line_length, &mlx.endian);
+  init_mlx(&mlx);
   init_casting_base(&r);
-  while(1)
-  {
-    r.x = 0;
-    while (r.x < screenWidth)
-    {
-      // //calculate ray position and direction
-      // cameraX = 2 * x / (double)screenWidth - 1; //x-coordinate in camera space
-      // rayDirX = dirX + planeX * cameraX;
-      // rayDirY = dirY + planeY * cameraX;
-      // //which box of the map we're in
-      // mapX = (int)posX;
-      // mapY = (int)posY;
+  frame_maker(&mlx, &r, worldMap);
+  sleep(5);
 
-      //length of ray from current position to next x or y-side
-      
-
-      //length of ray from one x or y-side to next x or y-side
-      //these are derived as:
-      //deltaDistX = sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX))
-      //deltaDistY = sqrt(1 + (rayDirX * rayDirX) / (rayDirY * rayDirY))
-      //which can be simplified to abs(|rayDir| / rayDirX) and abs(|rayDir| / rayDirY)
-      //where |rayDir| is the length of the vector (rayDirX, rayDirY). Its length,
-      //unlike (dirX, dirY) is not 1, however this does not matter, only the
-      //ratio between deltaDistX and deltaDistY matters, due to the way the DDA
-      //stepping further below works. So the values can be computed as below.
-      // Division through zero is prevented, even though technically that's not
-      // needed in C++ with IEEE 754 floating point values.
-       
-      // if (rayDirX == 0)
-      //   deltaDistX = 1e30;
-      // else
-      //   deltaDistX = fabs(1 / rayDirX);
-      // if (rayDirY == 0)
-      //   deltaDistY = 1e30;
-      // else
-      //   deltaDistY = fabs(1 / rayDirY);
-
-    
-
-      //what direction to step in x or y-direction (either +1 or -1)
-    
-
-      // hit = 0; //was there a wall hit?
-      //  //was a NS or a EW wall hit?
-      // //calculate step and initial sideDist
-      // if(rayDirX < 0)
-      // {
-      //   stepX = -1;
-      //   sideDistX = (posX - mapX) * deltaDistX;
-      // }
-      // else
-      // {
-      //   stepX = 1;
-      //   sideDistX = (mapX + 1.0 - posX) * deltaDistX;
-      // }
-      // if(rayDirY < 0)
-      // {
-      //   stepY = -1;
-      //   sideDistY = (posY - mapY) * deltaDistY;
-      // }
-      // else
-      // {
-      //   stepY = 1;
-      //   sideDistY = (mapY + 1.0 - posY) * deltaDistY;
-      // }
-
-      init_casting_loop(&r);
-
-      //perform DDA
-      dda(&r, worldMap);
-      // while(r.hit == 0)
-      // {
-      //   //jump to next map square, either in x-direction, or in y-direction
-      //   if(r.sideDistX < r.sideDistY)
-      //   {
-      //     r.sideDistX += r.deltaDistX;
-      //     r.mapX += r.stepX;
-      //     r.side = 0;
-      //   }
-      //   else
-      //   {
-      //     r.sideDistY += r.deltaDistY;
-      //     r.mapY += r.stepY;
-      //     r.side = 1;
-      //   }
-      //   //Check if ray has hit a wall
-      //   if(worldMap[r.mapX][r.mapY] > 0)
-      //     r.hit = 1;
-      // }
-      //Calculate distance projected on camera direction. This is the shortest distance from the point where the wall is
-      //hit to the camera plane. Euclidean to center camera point would give fisheye effect!
-      //This can be computed as (mapX - posX + (1 - stepX) / 2) / rayDirX for side == 0, or same formula with Y
-      //for size == 1, but can be simplified to the code below thanks to how sideDist and deltaDist are computed:
-      //because they were left scaled to |rayDir|. sideDist is the entire length of the ray above after the multiple
-      //steps, but we subtract deltaDist once because one step more into the wall was taken above.
-      // if(r.side == 0)
-      //   r.perpWallDist = (r.sideDistX - r.deltaDistX);
-      // else
-      //   r.perpWallDist = (r.sideDistY - r.deltaDistY);
-
-      // //Calculate height of line to draw on screen
-      // r.lineHeight = (int)(screenHeight / r.perpWallDist);
-
-      // //calculate lowest and highest pixel to fill in current stripe
-      // r.drawStart = -r.lineHeight / 2 + screenHeight / 2;
-      // if(r.drawStart < 0)
-      //   r.drawStart = 0;
-      // r.drawEnd = r.lineHeight / 2 + screenHeight / 2;
-      // if(r.drawEnd >= screenHeight)
-      //   r.drawEnd = screenHeight - 1;
-      calc_dist(&r);
-      //choose wall color
-      // ColorRGB color;
-      // switch(worldMap[mapX][mapY])
-      // {
-      //   case 1:  color = RGB_Red;    break; //red
-      //   case 2:  color = RGB_Green;  break; //green
-      //   case 3:  color = RGB_Blue;   break; //blue
-      //   case 4:  color = RGB_White;  break; //white
-      //   default: color = RGB_Yellow; break; //yellow
-      // }
-
-      //give x and y sides different brightness
-      if(r.side == 1)
-        r.color = 0x000000ff;
-      else
-        r.color = 0x00ff0000;
-
-      //draw the pixels of the stripe as a vertical line
-      // verLine(x, drawStart, drawEnd, color);
-      
-      draw_column_to_img(&mlx, r.x, r.drawStart, r.drawEnd, r.color);
-      ++r.x;
-    }
-    // mlx_clear_window(mlx.mlx, mlx.mlx_win);
-    mlx_put_image_to_window(mlx.mlx, mlx.mlx_win, mlx.img, 0, 0);
-    
-  }
-  
+  // while(1)
+  // {
+  //   r.x = 0;
+  //   while (r.x < screenWidth)
+  //   {
+  //     init_casting_loop(&r);
+  //     dda(&r, worldMap);
+  //     calc_dist(&r);
+  //     if(r.side == 1)
+  //       r.color = 0x000000ff;
+  //     else
+  //       r.color = 0x00ff0000;
+  //     draw_column_to_img(&mlx, r.x, r.drawStart, r.drawEnd, r.color);
+  //     ++r.x;
+  //   }
+  //   mlx_put_image_to_window(mlx.mlx, mlx.mlx_win, mlx.img, 0, 0);
+  // }
 }
