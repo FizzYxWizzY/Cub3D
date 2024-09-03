@@ -6,12 +6,20 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 23:00:43 by mflury            #+#    #+#             */
-/*   Updated: 2024/09/02 02:11:02 by mflury           ###   ########.fr       */
+/*   Updated: 2024/09/03 14:41:56 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../cub3d.h"
+// COMPILE:
+// gcc -Wall -Werror -Wextra -L../minilibx/linux -lmlx -lXext -lX11 -lm -lbsd raycaster_flat.c
 
+// #include "../../cub3d.h"
+#include "../minilibx/linux/mlx.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <limits.h>
+#include <math.h>
 
 int worldMap[24][24]=
 {
@@ -41,6 +49,35 @@ int worldMap[24][24]=
   {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 };
 
+typedef struct s_mlx
+{
+	void		*img;
+	char		*addr;
+	int			bits_per_pixel;
+	int			line_length;
+	int			endian;
+	void		*mlx;
+	void		*mlx_win;
+	int			img_width;
+	int			img_height;
+}				t_mlx;
+
+void	mlx_put_pixel_to_image(t_mlx *mlx, int x, int y, int color)
+{
+	char	*dst;
+
+  printf("x= %d\n", x);
+
+	dst = mlx->addr + (y * mlx->line_length + x * (mlx->bits_per_pixel / 8));
+	*(unsigned int*)dst = color;
+}
+
+void  draw_column_to_img(t_mlx *mlx, int x, int drawStart, int drawEnd, int color)
+{
+  
+  while (drawStart < drawEnd)
+    mlx_put_pixel_to_image(mlx, x, drawStart++, color);
+}
 
 int main()
 {
@@ -86,7 +123,9 @@ int main()
   
   int color;
   
-  int finish; // trying to replace done()
+  // int finish; // trying to replace done()
+
+  t_mlx mlx;
 
 
   posX = 22;
@@ -99,10 +138,17 @@ int main()
   x = 0;
   hit = 0;
   h = 480; // GUESS: screenHigth
-  finish = 0;
+  // finish = 0;
+
+  // screen(w, h, 0, "CUB3D");
+  mlx.mlx = mlx_init();
+  mlx.mlx_win = mlx_new_window(mlx.mlx, w, h, "Cub3D");
+  mlx.img = mlx_new_image(mlx.mlx, w, h);
+  mlx.addr = mlx_get_data_addr(mlx.img, &mlx.bits_per_pixel, &mlx.line_length, &mlx.endian);
   // the gameloop starts, this is the loop that draws a whole frame and reads the input every time.
-  while(!finish)
-  {
+  // while(!finish)
+  // {
+    // int i = 0;
     while (x < w)
     {
       //calculate ray position and direction
@@ -112,19 +158,22 @@ int main()
       //which box of the map we're in
       mapX = (int)posX;
       mapY = (int)posY;
-
+      // drawStart = 0;
+      // drawEnd = 0;
+      // lineHeight = 0;
+      // perpWallDist = 0;
       //length of ray from current position to next x or y-side
 
       // deltaDistX = (rayDirX == 0) ? 1e30 : std::abs(1 / rayDirX);
       if (rayDirX == 0)
         deltaDistX = 1e30;
       else
-        abs(1 / rayDirX);
+        deltaDistX = fabs(1 / rayDirX);
       // deltaDistY = (rayDirY == 0) ? 1e30 : std::abs(1 / rayDirY);
       if (rayDirY == 0)
         deltaDistY = 1e30;
       else
-        abs(1 / rayDirY);
+        deltaDistY = fabs(1 / rayDirY);
       
       //what direction to step in x or y-direction (either +1 or -1)
 
@@ -179,13 +228,25 @@ int main()
       lineHeight = (int)(h / perpWallDist);
 
       //calculate lowest and highest pixel to fill in current stripe
-      drawStart = ((lineHeight * -1) / 2) + (h / 2);
+     // // if (lineHeight == INT_MIN)
+     // // {
+     // //   if (h / 2 > INT_MAX - INT_MAX)
+     // //     drawStart = INT_MAX;
+     // //   else
+     // //     drawStart = INT_MAX + h / 2;
+     // // }
+     // // else
+     // // {
+     // //   drawStart = -lineHeight / 2 + h / 2;
+     // // }
+
+      drawStart = -lineHeight / 2 + h / 2;
       if(drawStart < 0)
         drawStart = 0;
-      drawEnd = (lineHeight / 2) + (h / 2);
+      drawEnd = lineHeight / 2 + h / 2;
       if(drawEnd >= h)
         drawEnd = h - 1;
-      
+      printf("drawStart= %d\n", drawStart);
       //choose wall color
       // switch(worldMap[mapX][mapY])
       // {
@@ -195,29 +256,34 @@ int main()
       //   case 4:  color = 0x00ffffff;  break; //white
       //   default: color = 0x00000000; break; //black
       // }
-      if (worldMap[mapX][mapY] == 1)
-        color = 0x00ff0000;
-      else if (worldMap[mapX][mapY] == 2)
-        color = 0x0000ff00;
-      else if (worldMap[mapX][mapY] == 3)
-        color = 0x000000ff;
-      else if (worldMap[mapX][mapY] == 4)
-        color = 0x00ffffff;
-      else
-        color = 0x00000000;
+      // if (worldMap[mapX][mapY] == 1)
+      color = 0x00ff0000;
+      // else if (worldMap[mapX][mapY] == 2)
+      //   color = 0x0000ff00;
+      // else if (worldMap[mapX][mapY] == 3)
+      //   color = 0x000000ff;
+      // else if (worldMap[mapX][mapY] == 4)
+      //   color = 0x00ffffff;
+      // else
+      //   color = 0x00000000;
 
       //give x and y sides different brightness
-      if(side == 1)
-        color = color / 2;
+      // if(side == 1)
+      //   color = color / 2;
       
       //draw the pixels of the stripe as a vertical line
-      // verLine(x, drawStart, drawEnd, color);
-
-      ++x;
+      // verLine(x, drawStart, drawEnd, color); DRAW SINGLE COLUMN
+      draw_column_to_img(&mlx, x, drawStart, drawEnd, color); // (t_ray should have "x, drawStart, drawEnd")
+      
+      // printf("loop count= %d\n", i++);
+      x++;
     }
-    finish = 1;
-  }
-
+    // finish = 1;
+    mlx_put_image_to_window(mlx.mlx, mlx.mlx_win, mlx.img, 0, 0);
+    // printf("x value: %d, w value: %d\n", x, w);
+    // printf("1e30= %f\n", 1e30);
+  // }
+  sleep(5);
 }
 
 

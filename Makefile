@@ -6,7 +6,7 @@
 #    By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/17 05:10:37 by mflury            #+#    #+#              #
-#    Updated: 2024/09/01 11:47:05 by mflury           ###   ########.fr        #
+#    Updated: 2024/09/03 20:48:43 by mflury           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,17 +30,18 @@ else
 	MLX_DIR = minilibx/macOS
 endif
 
-SRCS	=	srcs/error.c \
-			srcs/parsing/parsing.c \
-			srcs/parsing/parsing_textures.c \
-			srcs/parsing/parsing_textures_utils.c \
-			srcs/parsing/parsing_map.c \
-			srcs/parsing/parsing_map_utils.c \
-			srcs/render/render_window.c \
-			srcs/render/mlx_put_pixel_to_image.c \
-			srcs/render/create_trgb.c \
-			srcs/moves/keeb_listener.c \
-			srcs/main.c \
+SRCS	=	doc/raycaster_flat2.c \
+# srcs/error.c \
+# 			srcs/parsing/parsing.c \
+# 			srcs/parsing/parsing_textures.c \
+# 			srcs/parsing/parsing_textures_utils.c \
+# 			srcs/parsing/parsing_map.c \
+# 			srcs/parsing/parsing_map_utils.c \
+# 			srcs/render/render_window.c \
+# 			srcs/render/mlx_put_pixel_to_image.c \
+# 			srcs/render/create_trgb.c \
+# 			srcs/moves/keeb_listener.c \
+# 			srcs/main.c \
 
 all: $(NAME)
 

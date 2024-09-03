@@ -1,0 +1,401 @@
+/*
+Copyright (c) 2004-2021, Lode Vandevenne
+
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+    * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
+#include "../minilibx/linux/mlx.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <limits.h>
+#include <math.h>
+
+/*
+g++ *.cpp -lSDL -O3 -W -Wall -ansi -pedantic
+g++ *.cpp -lSDL
+*/
+
+//place the example code below here:
+
+#define screenWidth 640
+#define screenHeight 480
+#define mapWidth 24
+#define mapHeight 24
+
+int worldMap[mapHeight][mapWidth]=
+{
+  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
+  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+};
+
+typedef struct s_mlx
+{
+	void		*img;
+	char		*addr;
+	int			bits_per_pixel;
+	int			line_length;
+	int			endian;
+	void		*mlx;
+	void		*mlx_win;
+	int			img_width;
+	int			img_height;
+}				t_mlx;
+
+void	mlx_put_pixel_to_image(t_mlx *mlx, int x, int y, int color)
+{
+	char	*dst;
+
+	dst = mlx->addr + (y * mlx->line_length + x * (mlx->bits_per_pixel / 8));
+	*(unsigned int*)dst = color;
+}
+
+void  draw_column_to_img(t_mlx *mlx, int x, int drawStart, int drawEnd, int color)
+{
+  
+  while (drawStart < drawEnd)
+    mlx_put_pixel_to_image(mlx, x, drawStart++, color);
+}
+
+typedef struct s_casting
+{
+	double  posX; // = 22;
+  double  posY; // = 12;  //x and y start position
+  double  dirX; // = -1;
+  double  dirY; // = 0; //initial direction vector
+  double  planeX; // = 0;
+  double  planeY; // = 0.666; //the 2d raycaster version of camera plane
+
+  int     x;
+  double  cameraX;
+  double  rayDirX;
+  double  rayDirY;
+  int     mapX;
+  int     mapY;
+  double  sideDistX;
+  double  sideDistY;
+  double  deltaDistX;
+  double  deltaDistY;
+  double  perpWallDist;
+  int     stepX;
+  int     stepY;
+  int     hit;
+  int     side;
+  int     lineHeight;
+  int     drawStart;
+  int     drawEnd;
+  int     color;
+}				t_casting;
+
+void  init_casting_base(t_casting *r)
+{
+  r->posX = 22;
+  r->posY = 12;
+  r->dirX = -1;
+  r->dirY = 0; //initial direction vector
+  r->planeX = 0;
+  r->planeY = 0.666;
+}
+
+void  init_casting_loop(t_casting *r)
+{
+  //calculate ray position and direction
+  r->cameraX = 2 * r->x / (double)screenWidth - 1; //x-coordinate in camera space
+  r->rayDirX = r->dirX + r->planeX * r->cameraX;
+  r->rayDirY = r->dirY + r->planeY * r->cameraX;
+  //which box of the map we're in
+  r->mapX = (int)r->posX;
+  r->mapY = (int)r->posY;
+
+  if (r->rayDirX == 0)
+    r->deltaDistX = 1e30;
+  else
+    r->deltaDistX = fabs(1 / r->rayDirX);
+  if (r->rayDirY == 0)
+    r->deltaDistY = 1e30;
+  else
+    r->deltaDistY = fabs(1 / r->rayDirY);
+  
+  r->hit = 0;
+  if(r->rayDirX < 0)
+  {
+    r->stepX = -1;
+    r->sideDistX = (r->posX - r->mapX) * r->deltaDistX;
+  }
+  else
+  {
+    r->stepX = 1;
+    r->sideDistX = (r->mapX + 1.0 - r->posX) * r->deltaDistX;
+  }
+  if(r->rayDirY < 0)
+  {
+    r->stepY = -1;
+    r->sideDistY = (r->posY - r->mapY) * r->deltaDistY;
+  }
+  else
+  {
+    r->stepY = 1;
+    r->sideDistY = (r->mapY + 1.0 - r->posY) * r->deltaDistY;
+  }
+}
+
+void  dda(t_casting *r, int worldMap[mapHeight][mapWidth])
+{
+  while(r->hit == 0)
+  {
+    //jump to next map square, either in x-direction, or in y-direction
+    if(r->sideDistX < r->sideDistY)
+    {
+      r->sideDistX += r->deltaDistX;
+      r->mapX += r->stepX;
+      r->side = 0;
+    }
+    else
+    {
+      r->sideDistY += r->deltaDistY;
+      r->mapY += r->stepY;
+      r->side = 1;
+    }
+    //Check if ray has hit a wall
+    if(worldMap[r->mapX][r->mapY] > 0)
+      r->hit = 1;
+  }
+}
+
+void  calc_dist(t_casting *r)
+{
+  if(r->side == 0)
+    r->perpWallDist = (r->sideDistX - r->deltaDistX);
+  else
+    r->perpWallDist = (r->sideDistY - r->deltaDistY);
+
+  //Calculate height of line to draw on screen
+  r->lineHeight = (int)(screenHeight / r->perpWallDist);
+
+  //calculate lowest and highest pixel to fill in current stripe
+  r->drawStart = -r->lineHeight / 2 + screenHeight / 2;
+  if(r->drawStart < 0)
+    r->drawStart = 0;
+  r->drawEnd = r->lineHeight / 2 + screenHeight / 2;
+  if(r->drawEnd >= screenHeight)
+    r->drawEnd = screenHeight - 1;
+}
+
+int main(/*int argc, char **argv*/)
+{
+  t_mlx     mlx;
+  t_casting r;
+
+  // double posX = 22;
+  // double posY = 12;  //x and y start position
+  // double dirX = -1;
+  // double dirY = 0; //initial direction vector
+  // double planeX = 0;
+  // double planeY = 0.666; //the 2d raycaster version of camera plane
+
+  // int x;
+  // double cameraX;
+  // double rayDirX;
+  // double rayDirY;
+  // int mapX;
+  // int mapY;
+  // double sideDistX;
+  // double sideDistY;
+  // double deltaDistX;
+  // double deltaDistY;
+  // double perpWallDist;
+  // int stepX;
+  // int stepY;
+  // int hit;
+  // int side;
+  // int lineHeight;
+  // int drawStart;
+  // int drawEnd;
+  // int color;
+
+
+  // screen(screenWidth, screenHeight, 0, "Raycaster");
+  mlx.mlx = mlx_init();
+  mlx.mlx_win = mlx_new_window(mlx.mlx, screenWidth, screenHeight, "Cub3D");
+  mlx.img = mlx_new_image(mlx.mlx, screenWidth, screenHeight);
+  mlx.addr = mlx_get_data_addr(mlx.img, &mlx.bits_per_pixel, &mlx.line_length, &mlx.endian);
+  init_casting_base(&r);
+  while(1)
+  {
+    r.x = 0;
+    while (r.x < screenWidth)
+    {
+      // //calculate ray position and direction
+      // cameraX = 2 * x / (double)screenWidth - 1; //x-coordinate in camera space
+      // rayDirX = dirX + planeX * cameraX;
+      // rayDirY = dirY + planeY * cameraX;
+      // //which box of the map we're in
+      // mapX = (int)posX;
+      // mapY = (int)posY;
+
+      //length of ray from current position to next x or y-side
+      
+
+      //length of ray from one x or y-side to next x or y-side
+      //these are derived as:
+      //deltaDistX = sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX))
+      //deltaDistY = sqrt(1 + (rayDirX * rayDirX) / (rayDirY * rayDirY))
+      //which can be simplified to abs(|rayDir| / rayDirX) and abs(|rayDir| / rayDirY)
+      //where |rayDir| is the length of the vector (rayDirX, rayDirY). Its length,
+      //unlike (dirX, dirY) is not 1, however this does not matter, only the
+      //ratio between deltaDistX and deltaDistY matters, due to the way the DDA
+      //stepping further below works. So the values can be computed as below.
+      // Division through zero is prevented, even though technically that's not
+      // needed in C++ with IEEE 754 floating point values.
+       
+      // if (rayDirX == 0)
+      //   deltaDistX = 1e30;
+      // else
+      //   deltaDistX = fabs(1 / rayDirX);
+      // if (rayDirY == 0)
+      //   deltaDistY = 1e30;
+      // else
+      //   deltaDistY = fabs(1 / rayDirY);
+
+    
+
+      //what direction to step in x or y-direction (either +1 or -1)
+    
+
+      // hit = 0; //was there a wall hit?
+      //  //was a NS or a EW wall hit?
+      // //calculate step and initial sideDist
+      // if(rayDirX < 0)
+      // {
+      //   stepX = -1;
+      //   sideDistX = (posX - mapX) * deltaDistX;
+      // }
+      // else
+      // {
+      //   stepX = 1;
+      //   sideDistX = (mapX + 1.0 - posX) * deltaDistX;
+      // }
+      // if(rayDirY < 0)
+      // {
+      //   stepY = -1;
+      //   sideDistY = (posY - mapY) * deltaDistY;
+      // }
+      // else
+      // {
+      //   stepY = 1;
+      //   sideDistY = (mapY + 1.0 - posY) * deltaDistY;
+      // }
+
+      init_casting_loop(&r);
+
+      //perform DDA
+      dda(&r, worldMap);
+      // while(r.hit == 0)
+      // {
+      //   //jump to next map square, either in x-direction, or in y-direction
+      //   if(r.sideDistX < r.sideDistY)
+      //   {
+      //     r.sideDistX += r.deltaDistX;
+      //     r.mapX += r.stepX;
+      //     r.side = 0;
+      //   }
+      //   else
+      //   {
+      //     r.sideDistY += r.deltaDistY;
+      //     r.mapY += r.stepY;
+      //     r.side = 1;
+      //   }
+      //   //Check if ray has hit a wall
+      //   if(worldMap[r.mapX][r.mapY] > 0)
+      //     r.hit = 1;
+      // }
+      //Calculate distance projected on camera direction. This is the shortest distance from the point where the wall is
+      //hit to the camera plane. Euclidean to center camera point would give fisheye effect!
+      //This can be computed as (mapX - posX + (1 - stepX) / 2) / rayDirX for side == 0, or same formula with Y
+      //for size == 1, but can be simplified to the code below thanks to how sideDist and deltaDist are computed:
+      //because they were left scaled to |rayDir|. sideDist is the entire length of the ray above after the multiple
+      //steps, but we subtract deltaDist once because one step more into the wall was taken above.
+      // if(r.side == 0)
+      //   r.perpWallDist = (r.sideDistX - r.deltaDistX);
+      // else
+      //   r.perpWallDist = (r.sideDistY - r.deltaDistY);
+
+      // //Calculate height of line to draw on screen
+      // r.lineHeight = (int)(screenHeight / r.perpWallDist);
+
+      // //calculate lowest and highest pixel to fill in current stripe
+      // r.drawStart = -r.lineHeight / 2 + screenHeight / 2;
+      // if(r.drawStart < 0)
+      //   r.drawStart = 0;
+      // r.drawEnd = r.lineHeight / 2 + screenHeight / 2;
+      // if(r.drawEnd >= screenHeight)
+      //   r.drawEnd = screenHeight - 1;
+      calc_dist(&r);
+      //choose wall color
+      // ColorRGB color;
+      // switch(worldMap[mapX][mapY])
+      // {
+      //   case 1:  color = RGB_Red;    break; //red
+      //   case 2:  color = RGB_Green;  break; //green
+      //   case 3:  color = RGB_Blue;   break; //blue
+      //   case 4:  color = RGB_White;  break; //white
+      //   default: color = RGB_Yellow; break; //yellow
+      // }
+
+      //give x and y sides different brightness
+      if(r.side == 1)
+        r.color = 0x000000ff;
+      else
+        r.color = 0x00ff0000;
+
+      //draw the pixels of the stripe as a vertical line
+      // verLine(x, drawStart, drawEnd, color);
+      
+      draw_column_to_img(&mlx, r.x, r.drawStart, r.drawEnd, r.color);
+      ++r.x;
+    }
+    // mlx_clear_window(mlx.mlx, mlx.mlx_win);
+    mlx_put_image_to_window(mlx.mlx, mlx.mlx_win, mlx.img, 0, 0);
+    
+  }
+  
+}
