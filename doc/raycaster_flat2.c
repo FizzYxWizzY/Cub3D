@@ -40,6 +40,30 @@ g++ *.cpp -lSDL
 #define mapWidth 24
 #define mapHeight 24
 
+enum e_keys
+{
+	KEY_ESC = 65307,
+	KEY_W = 119,
+	KEY_A = 97,
+	KEY_S = 115,
+	KEY_D = 100,
+	KEY_UP = 65362,
+	KEY_DOWN = 65364,
+	KEY_LEFT = 65361,
+	KEY_RIGHT = 65363,
+};
+
+enum e_events
+{
+	ON_KEYDOWN = 2,
+	ON_KEYUP = 3,
+	ON_MOUSEDOWN = 4,
+	ON_MOUSEUP = 5,
+	ON_MOUSEMOVE = 6,
+	ON_EXPOSE = 12,
+	ON_DESTROY = 17
+};
+
 int worldMap[mapHeight][mapWidth]=
 {
   {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
@@ -80,6 +104,8 @@ typedef struct s_mlx
 	int			img_width;
 	int			img_height;
 }				t_mlx;
+
+
 
 void	mlx_put_pixel_to_image(t_mlx *mlx, int x, int y, int color)
 {
@@ -252,8 +278,9 @@ void	draw_background(t_mlx *mlx)
 	}
 }
 
-void  frame_maker(t_mlx *mlx, t_casting *r, int worldMap[mapHeight][mapWidth])
+int  frame_maker(t_mlx *mlx, t_casting *r, int worldMap[mapHeight][mapWidth])
 {
+  printf("HI!\n");
   draw_background(mlx);
   r->x = 0;
   while (r->x < screenWidth)
@@ -269,17 +296,65 @@ void  frame_maker(t_mlx *mlx, t_casting *r, int worldMap[mapHeight][mapWidth])
     ++r->x;
   }
   mlx_put_image_to_window(mlx->mlx, mlx->mlx_win, mlx->img, 0, 0);
+  return 0;
 }
+typedef struct s_structptr
+{
+	t_mlx     *mlx;
+  t_casting *r;
+  int       *map[24];
+
+}				t_structptr;
+
+void  move_w(t_structptr *s, int worldMap[mapHeight][mapWidth])
+{
+  if(worldMap[(int)(s->r->posX + s->r->dirX * 0.9)][(int)s->r->posY] == 0)
+    s->r->posX += s->r->dirX * 0.9;
+  if(worldMap[(int)(s->r->posX)][(int)(s->r->posY + s->r->dirY * 0.9)] == 0)
+    s->r->posY += s->r->dirY * 0.9;
+  // mlx_clear_window(mlx->mlx, mlx->mlx_win);
+  // mlx_destroy_image(mlx->mlx, mlx->img);
+  // mlx->img = mlx_new_image(mlx->mlx, screenWidth, screenHeight);
+  // mlx->addr = mlx_get_data_addr(mlx->img, &mlx->bits_per_pixel, &mlx->line_length, &mlx->endian);
+  // frame_maker(s->mlx->mlx, s->r, worldMap);
+}
+
+int cclose()
+{
+  exit(0);
+}
+
+int keeb_listener(int keycode, t_structptr *s)
+{
+  (void) s;
+
+  if (keycode == KEY_ESC)
+    cclose();
+  // else if (keycode == KEY_W)
+  //   move_w(ctx, worldMap);
+  return 0;
+}
+
 
 int main(/*int argc, char **argv*/)
 {
   t_mlx     mlx;
   t_casting r;
+  t_structptr s;
+
+  s.mlx = &mlx;
+  s.r = &r;
+  // ctx.map = worldMap;
+
 
   init_mlx(&mlx);
   init_casting_base(&r);
   frame_maker(&mlx, &r, worldMap);
-  sleep(5);
+  mlx_do_key_autorepeaton(mlx.mlx);
+  // mlx_loop_hook(mlx.mlx, frame_maker, &r);
+	mlx_hook(mlx.mlx_win, ON_KEYDOWN, (1L<<0), keeb_listener, &s);
+  mlx_hook(mlx.mlx_win, ON_DESTROY, (1L<<0), cclose, &s);
+	mlx_loop(mlx.mlx);
 
   // while(1)
   // {
