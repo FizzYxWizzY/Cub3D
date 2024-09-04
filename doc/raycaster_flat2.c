@@ -261,11 +261,11 @@ void	draw_background(t_mlx *mlx)
 
 	y = 0;
 	x = 0;
-	while (y < 480)
+	while (y < screenHeight)
 	{
-			while (x < 640)
+			while (x < screenWidth)
 			{
-				if (y < (480 / 2))
+				if (y < (screenHeight / 2))
 					mlx_put_pixel_to_image(mlx, x++, y, 0x0004D6FF); // ceiling bg
 				else
 					mlx_put_pixel_to_image(mlx, x++, y, 0x0000D40E); // floor bg
@@ -279,6 +279,9 @@ void	draw_background(t_mlx *mlx)
 int  frame_maker(t_mlx *mlx, t_casting *r, int worldMap[mapHeight][mapWidth])
 {
   printf("HI!\n");
+  // mlx_destroy_image(mlx->mlx, mlx->img);
+  // mlx->img =  mlx_new_image(mlx->mlx, screenWidth, screenHeight);
+  // mlx->addr = mlx_get_data_addr(mlx->img, &mlx->bits_per_pixel, &mlx->line_length, &mlx->endian);
   draw_background(mlx);
   r->x = 0;
   while (r->x < screenWidth)
@@ -293,7 +296,7 @@ int  frame_maker(t_mlx *mlx, t_casting *r, int worldMap[mapHeight][mapWidth])
     draw_column_to_img(mlx, r->x, r->drawStart, r->drawEnd, r->color);
     ++r->x;
   }
-  mlx_clear_window(mlx->mlx,mlx->mlx_win);
+  mlx_clear_window(mlx->mlx, mlx->mlx_win);
   mlx_put_image_to_window(mlx->mlx, mlx->mlx_win, mlx->img, 0, 0);
   return 0;
 }
@@ -307,10 +310,10 @@ typedef struct s_structptr
 
 void  move_w(t_structptr *s)
 {
-  if(worldMap[(int)(s->r->posX + s->r->dirX * 0.9)][(int)s->r->posY] == 0)
-    s->r->posX += s->r->dirX * 0.9;
-  if(worldMap[(int)(s->r->posX)][(int)(s->r->posY + s->r->dirY * 0.9)] == 0)
-    s->r->posY += s->r->dirY * 0.9;
+  if(worldMap[(int)(s->r->posX + s->r->dirX * 1)][(int)s->r->posY] == 0)
+    s->r->posX += s->r->dirX * 1;
+  if(worldMap[(int)(s->r->posX)][(int)(s->r->posY + s->r->dirY * 1)] == 0)
+    s->r->posY += s->r->dirY * 1;
   // mlx_clear_window(mlx->mlx, mlx->mlx_win);
   // mlx_destroy_image(mlx->mlx, mlx->img);
   // mlx->img = mlx_new_image(mlx->mlx, screenWidth, screenHeight);
@@ -331,6 +334,12 @@ int keeb_listener(int keycode, t_structptr *s)
     cclose();
   else if (keycode == KEY_W)
     move_w(s);
+  // else if (keycode == KEY_A)
+  //   move_a(s);
+  // else if (keycode == KEY_S)
+  //   move_s(s);
+  // else if (keycode == KEY_D)
+  //   move_d(s);
   return 0;
 }
 
@@ -351,7 +360,7 @@ int main(/*int argc, char **argv*/)
   frame_maker(&mlx, &r, worldMap);
   mlx_do_key_autorepeaton(mlx.mlx);
   // mlx_loop_hook(mlx.mlx, frame_maker, &r);
-	mlx_hook(mlx.mlx_win, ON_KEYDOWN, (1L<<0), keeb_listener, &s);
+	mlx_hook(mlx.mlx_win, ON_KEYDOWN, (1L<<0), &keeb_listener, &s);
   mlx_hook(mlx.mlx_win, ON_DESTROY, 0, &cclose, &s);
 	mlx_loop(mlx.mlx);
 
