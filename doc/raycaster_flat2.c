@@ -1,25 +1,14 @@
-/*
-Copyright (c) 2004-2021, Lode Vandevenne
-
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-
-    * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
-CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   raycaster_flat2.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/05 12:56:57 by mflury            #+#    #+#             */
+/*   Updated: 2024/09/05 13:36:58 by mflury           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../minilibx/linux/mlx.h"
 #include <stdlib.h>
@@ -243,7 +232,7 @@ void  calc_dist(t_casting *r)
     r->drawStart = 0;
   r->drawEnd = r->lineHeight / 2 + screenHeight / 2;
   if(r->drawEnd >= screenHeight)
-    r->drawEnd = screenHeight - 1;
+    r->drawEnd = screenHeight;
 }
 
 void  init_mlx(t_mlx *mlx)
@@ -276,40 +265,43 @@ void	draw_background(t_mlx *mlx)
 	}
 }
 
-int  frame_maker(t_mlx *mlx, t_casting *r, int worldMap[mapHeight][mapWidth])
-{
-  printf("HI!\n");
-  // mlx_destroy_image(mlx->mlx, mlx->img);
-  // mlx->img =  mlx_new_image(mlx->mlx, screenWidth, screenHeight);
-  // mlx->addr = mlx_get_data_addr(mlx->img, &mlx->bits_per_pixel, &mlx->line_length, &mlx->endian);
-  draw_background(mlx);
-  r->x = 0;
-  while (r->x < screenWidth)
-  {
-    init_casting_loop(r);
-    dda(r, worldMap);
-    calc_dist(r);
-    if(r->side == 1)
-      r->color = 0x000000ff;
-    else
-      r->color = 0x00ff0000;
-    draw_column_to_img(mlx, r->x, r->drawStart, r->drawEnd, r->color);
-    ++r->x;
-  }
-  mlx_clear_window(mlx->mlx, mlx->mlx_win);
-  mlx_put_image_to_window(mlx->mlx, mlx->mlx_win, mlx->img, 0, 0);
-  return 0;
-}
 typedef struct s_structptr
 {
 	t_mlx     *mlx;
   t_casting *r;
-  int       *map[24];
+  // int       *map[24];
 
 }				t_structptr;
 
+int  frame_maker(t_structptr *s/*, int worldMap[mapHeight][mapWidth]*/)
+{
+  printf("HI!\n");
+  mlx_destroy_image(s->mlx->mlx, s->mlx->img);
+  s->mlx->img =  mlx_new_image(s->mlx->mlx, screenWidth, screenHeight);
+  s->mlx->addr = mlx_get_data_addr(s->mlx->img, &s->mlx->bits_per_pixel, &s->mlx->line_length, &s->mlx->endian);
+  draw_background(s->mlx);
+  s->r->x = 0;
+  while (s->r->x < screenWidth)
+  {
+    init_casting_loop(s->r);
+    dda(s->r, worldMap);
+    calc_dist(s->r);
+    if(s->r->side == 1)
+      s->r->color = 0x000000ff;
+    else
+      s->r->color = 0x00ff0000;
+    draw_column_to_img(s->mlx, s->r->x, s->r->drawStart, s->r->drawEnd, s->r->color);
+    ++s->r->x;
+  }
+  mlx_clear_window(s->mlx->mlx, s->mlx->mlx_win);
+  mlx_put_image_to_window(s->mlx->mlx, s->mlx->mlx_win, s->mlx->img, 0, 0);
+  return 0;
+}
+
 void  move_w(t_structptr *s)
 {
+  printf("hi! LOL\n");
+  // (void)s;
   if(worldMap[(int)(s->r->posX + s->r->dirX * 1)][(int)s->r->posY] == 0)
     s->r->posX += s->r->dirX * 1;
   if(worldMap[(int)(s->r->posX)][(int)(s->r->posY + s->r->dirY * 1)] == 0)
@@ -318,7 +310,22 @@ void  move_w(t_structptr *s)
   // mlx_destroy_image(mlx->mlx, mlx->img);
   // mlx->img = mlx_new_image(mlx->mlx, screenWidth, screenHeight);
   // mlx->addr = mlx_get_data_addr(mlx->img, &mlx->bits_per_pixel, &mlx->line_length, &mlx->endian);
-  frame_maker(s->mlx->mlx, s->r, worldMap);
+  frame_maker(s/*, worldMap*/);
+}
+
+void  move_s(t_structptr *s)
+{
+  printf("hi! LOL\n");
+  // (void)s;
+  if(worldMap[(int)(s->r->posX + s->r->dirX * 1)][(int)s->r->posY] == 0)
+    s->r->posX -= s->r->dirX * 1;
+  if(worldMap[(int)(s->r->posX)][(int)(s->r->posY + s->r->dirY * 1)] == 0)
+    s->r->posY -= s->r->dirY * 1;
+  // mlx_clear_window(mlx->mlx, mlx->mlx_win);
+  // mlx_destroy_image(mlx->mlx, mlx->img);
+  // mlx->img = mlx_new_image(mlx->mlx, screenWidth, screenHeight);
+  // mlx->addr = mlx_get_data_addr(mlx->img, &mlx->bits_per_pixel, &mlx->line_length, &mlx->endian);
+  frame_maker(s/*, worldMap*/);
 }
 
 int cclose()
@@ -328,7 +335,7 @@ int cclose()
 
 int keeb_listener(int keycode, t_structptr *s)
 {
-  (void) s;
+  // (void) s;
 
   if (keycode == KEY_ESC)
     cclose();
@@ -336,8 +343,8 @@ int keeb_listener(int keycode, t_structptr *s)
     move_w(s);
   // else if (keycode == KEY_A)
   //   move_a(s);
-  // else if (keycode == KEY_S)
-  //   move_s(s);
+  else if (keycode == KEY_S)
+    move_s(s);
   // else if (keycode == KEY_D)
   //   move_d(s);
   return 0;
@@ -357,10 +364,12 @@ int main(/*int argc, char **argv*/)
 
   init_mlx(&mlx);
   init_casting_base(&r);
-  frame_maker(&mlx, &r, worldMap);
+  frame_maker(&s); // (s->mlx->mlx, s->r, worldMap);
+  // frame_maker(&mlx, &r, worldMap);
+  // frame_maker(&mlx, &r, worldMap);
   mlx_do_key_autorepeaton(mlx.mlx);
-  // mlx_loop_hook(mlx.mlx, frame_maker, &r);
-	mlx_hook(mlx.mlx_win, ON_KEYDOWN, (1L<<0), &keeb_listener, &s);
+  mlx_loop_hook(mlx.mlx, frame_maker, &s);
+	mlx_hook(mlx.mlx_win, ON_KEYDOWN, (1L<<0), keeb_listener, &s);
   mlx_hook(mlx.mlx_win, ON_DESTROY, 0, &cclose, &s);
 	mlx_loop(mlx.mlx);
 
