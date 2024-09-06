@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 12:56:57 by mflury            #+#    #+#             */
-/*   Updated: 2024/09/05 13:36:58 by mflury           ###   ########.fr       */
+/*   Updated: 2024/09/05 14:34:34 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -302,30 +302,88 @@ void  move_w(t_structptr *s)
 {
   printf("hi! LOL\n");
   // (void)s;
-  if(worldMap[(int)(s->r->posX + s->r->dirX * 1)][(int)s->r->posY] == 0)
-    s->r->posX += s->r->dirX * 1;
-  if(worldMap[(int)(s->r->posX)][(int)(s->r->posY + s->r->dirY * 1)] == 0)
-    s->r->posY += s->r->dirY * 1;
+  if(worldMap[(int)(s->r->posX + s->r->dirX * 0.5)][(int)s->r->posY] == 0)
+    s->r->posX += s->r->dirX * 0.5;
+  if(worldMap[(int)(s->r->posX)][(int)(s->r->posY + s->r->dirY * 0.5)] == 0)
+    s->r->posY += s->r->dirY * 0.5;
   // mlx_clear_window(mlx->mlx, mlx->mlx_win);
   // mlx_destroy_image(mlx->mlx, mlx->img);
   // mlx->img = mlx_new_image(mlx->mlx, screenWidth, screenHeight);
   // mlx->addr = mlx_get_data_addr(mlx->img, &mlx->bits_per_pixel, &mlx->line_length, &mlx->endian);
-  frame_maker(s/*, worldMap*/);
+  // frame_maker(s/*, worldMap*/);
 }
 
 void  move_s(t_structptr *s)
 {
   printf("hi! LOL\n");
   // (void)s;
-  if(worldMap[(int)(s->r->posX + s->r->dirX * 1)][(int)s->r->posY] == 0)
-    s->r->posX -= s->r->dirX * 1;
-  if(worldMap[(int)(s->r->posX)][(int)(s->r->posY + s->r->dirY * 1)] == 0)
-    s->r->posY -= s->r->dirY * 1;
+  if(worldMap[(int)(s->r->posX - s->r->dirX * 0.5)][(int)s->r->posY] == 0)
+    s->r->posX -= s->r->dirX * 0.5;
+  if(worldMap[(int)s->r->posX][(int)(s->r->posY - s->r->dirY * 0.5)] == 0)
+    s->r->posY -= s->r->dirY * 0.5;
   // mlx_clear_window(mlx->mlx, mlx->mlx_win);
   // mlx_destroy_image(mlx->mlx, mlx->img);
   // mlx->img = mlx_new_image(mlx->mlx, screenWidth, screenHeight);
   // mlx->addr = mlx_get_data_addr(mlx->img, &mlx->bits_per_pixel, &mlx->line_length, &mlx->endian);
-  frame_maker(s/*, worldMap*/);
+  // frame_maker(s/*, worldMap*/);
+}
+
+void  move_a(t_structptr *s)
+{
+  printf("hi! LOL\n");
+  // (void)s;
+  if(worldMap[(int)(s->r->posX - s->r->dirX * 0.5)][(int)s->r->posY] == 0)
+    s->r->posX += s->r->dirY * 0.5; //  s->r->dirX * 1
+  if(worldMap[(int)s->r->posX][(int)(s->r->posY - s->r->dirY * 0.5)] == 0)
+    s->r->posY += s->r->dirX * 0.5; // s->r->dirY * 1
+  // mlx_clear_window(mlx->mlx, mlx->mlx_win);
+  // mlx_destroy_image(mlx->mlx, mlx->img);
+  // mlx->img = mlx_new_image(mlx->mlx, screenWidth, screenHeight);
+  // mlx->addr = mlx_get_data_addr(mlx->img, &mlx->bits_per_pixel, &mlx->line_length, &mlx->endian);
+  // frame_maker(s/*, worldMap*/);
+}
+
+void  move_d(t_structptr *s)
+{
+  printf("hi! LOL\n");
+  // (void)s;
+  if(worldMap[(int)(s->r->posX - s->r->dirX * 1)][(int)s->r->posY] == 0)
+    s->r->posX -= s->r->dirY * 0.5; //  s->r->dirX * 1
+  if(worldMap[(int)s->r->posX][(int)(s->r->posY - s->r->dirY * 1)] == 0)
+    s->r->posY -= s->r->dirX * 0.5; // s->r->dirY * 1
+  // mlx_clear_window(mlx->mlx, mlx->mlx_win);
+  // mlx_destroy_image(mlx->mlx, mlx->img);
+  // mlx->img = mlx_new_image(mlx->mlx, screenWidth, screenHeight);
+  // mlx->addr = mlx_get_data_addr(mlx->img, &mlx->bits_per_pixel, &mlx->line_length, &mlx->endian);
+  // frame_maker(s/*, worldMap*/);
+}
+
+void  move_left(t_structptr *s)
+{
+  printf("hi! LOL\n");
+  // (void)s;
+  if(worldMap[(int)(s->r->posX - s->r->dirX * 0.5)][(int)s->r->posY] == 0)
+    s->r->posX -= s->r->dirY * 0.5; //  s->r->dirX * 1
+  if(worldMap[(int)s->r->posX][(int)(s->r->posY - s->r->dirY * 0.5)] == 0)
+    s->r->posY -= s->r->dirX * 0.5; // s->r->dirY * 1
+  // mlx_clear_window(mlx->mlx, mlx->mlx_win);
+  // mlx_destroy_image(mlx->mlx, mlx->img);
+  // mlx->img = mlx_new_image(mlx->mlx, screenWidth, screenHeight);
+  // mlx->addr = mlx_get_data_addr(mlx->img, &mlx->bits_per_pixel, &mlx->line_length, &mlx->endian);
+  // frame_maker(s/*, worldMap*/);
+}
+
+void  move_right(t_structptr *s)
+{
+  double oldDirX;
+  double oldPlaneX;
+
+  oldDirX = s->r->dirX;
+  s->r->dirX = s->r->dirX * cos(-0.5) - s->r->dirY * sin(-0.5);
+  s->r->dirY = oldDirX * sin(-0.5) + s->r->dirY * cos(-0.5);
+  oldPlaneX = s->r->planeX;
+  s->r->planeX = s->r->planeX * cos(-0.5) - s->r->planeY * sin(-0.5);
+  s->r->planeY = oldPlaneX * sin(-0.5) + s->r->planeY * cos(-0.5);
 }
 
 int cclose()
@@ -341,12 +399,16 @@ int keeb_listener(int keycode, t_structptr *s)
     cclose();
   else if (keycode == KEY_W)
     move_w(s);
-  // else if (keycode == KEY_A)
-  //   move_a(s);
+  else if (keycode == KEY_A)
+    move_a(s);
   else if (keycode == KEY_S)
     move_s(s);
-  // else if (keycode == KEY_D)
-  //   move_d(s);
+  else if (keycode == KEY_D)
+    move_d(s);
+  else if (keycode == KEY_LEFT)
+    move_left(s);
+  else if (keycode == KEY_RIGHT)
+    move_right(s);
   return 0;
 }
 
