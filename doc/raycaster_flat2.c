@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 12:56:57 by mflury            #+#    #+#             */
-/*   Updated: 2024/09/07 03:37:07 by mflury           ###   ########.fr       */
+/*   Updated: 2024/09/07 05:36:48 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ void  init_casting_base(t_casting *casting)
 	casting->planeY = 0.666;
 }
 
-void  init_casting_loop(t_casting *casting)
+void  init_casting_loop_part_one(t_casting *casting)
 {
 	casting->cameraX = 2 * casting->x / (double)screenWidth - 1;
 	casting->rayDirX = casting->dirX + casting->planeX * casting->cameraX;
@@ -158,6 +158,11 @@ void  init_casting_loop(t_casting *casting)
 		casting->deltaDistY = 1e30;
 	else
 		casting->deltaDistY = fabs(1 / casting->rayDirY);
+}
+
+void  init_casting_loop(t_casting *casting)
+{
+	init_casting_loop_part_one(casting);
 	casting->hit = 0;
 	if(casting->rayDirX < 0)
 	{
@@ -183,46 +188,46 @@ void  init_casting_loop(t_casting *casting)
 
 void  dda(t_casting *r, int worldMap[mapHeight][mapWidth])
 {
-  while(r->hit == 0)
-  {
-    if(r->sideDistX < r->sideDistY)
-    {
-      r->sideDistX += r->deltaDistX;
-      r->mapX += r->stepX;
-      r->side = 0;
-    }
-    else
-    {
-      r->sideDistY += r->deltaDistY;
-      r->mapY += r->stepY;
-      r->side = 1;
-    }
-    if(worldMap[r->mapX][r->mapY] > 0)
-      r->hit = 1;
-  }
+	while(r->hit == 0)
+	{
+		if(r->sideDistX < r->sideDistY)
+		{
+    		r->sideDistX += r->deltaDistX;
+    		r->mapX += r->stepX;
+    		r->side = 0;
+    	}
+    	else
+    	{
+      		r->sideDistY += r->deltaDistY;
+      		r->mapY += r->stepY;
+      		r->side = 1;
+    	}
+    	if(worldMap[r->mapX][r->mapY] > 0)
+			r->hit = 1;
+  	}
 }
 
 void  calc_dist(t_casting *r)
 {
-  if(r->side == 0)
-    r->perpWallDist = (r->sideDistX - r->deltaDistX);
-  else
-    r->perpWallDist = (r->sideDistY - r->deltaDistY);
-  r->lineHeight = (int)(screenHeight / r->perpWallDist);
-  r->drawStart = -r->lineHeight / 2 + screenHeight / 2;
-  if(r->drawStart < 0)
-    r->drawStart = 0;
-  r->drawEnd = r->lineHeight / 2 + screenHeight / 2;
-  if(r->drawEnd >= screenHeight)
-    r->drawEnd = screenHeight;
+	if(r->side == 0)
+		r->perpWallDist = (r->sideDistX - r->deltaDistX);
+	else
+		r->perpWallDist = (r->sideDistY - r->deltaDistY);
+	r->lineHeight = (int)(screenHeight / r->perpWallDist);
+	r->drawStart = -r->lineHeight / 2 + screenHeight / 2;
+	if(r->drawStart < 0)
+		r->drawStart = 0;
+	r->drawEnd = r->lineHeight / 2 + screenHeight / 2;
+	if(r->drawEnd >= screenHeight)
+		r->drawEnd = screenHeight;
 }
 
 void  init_mlx(t_mlx *mlx)
 {
-  mlx->mlx = mlx_init();
-  mlx->mlx_win = mlx_new_window(mlx->mlx, screenWidth, screenHeight, "Cub3D");
-  mlx->img = mlx_new_image(mlx->mlx, screenWidth, screenHeight);
-  mlx->addr = mlx_get_data_addr(mlx->img, &mlx->bits_per_pixel, &mlx->line_length, &mlx->endian);
+	mlx->mlx = mlx_init();
+	mlx->mlx_win = mlx_new_window(mlx->mlx, screenWidth, screenHeight, "Cub3D");
+	mlx->img = mlx_new_image(mlx->mlx, screenWidth, screenHeight);
+	mlx->addr = mlx_get_data_addr(mlx->img, &mlx->bits_per_pixel, &mlx->line_length, &mlx->endian);
 }
 
 void	draw_background(t_mlx *mlx)
@@ -246,10 +251,10 @@ void	draw_background(t_mlx *mlx)
 	}
 }
 
-typedef struct s_structptr
+typedef struct	s_structptr
 {
-	t_mlx     *mlx;
-	t_casting *r;
+	t_mlx     	*mlx;
+	t_casting 	*r;
 }				t_structptr;
 
 int  frame_maker(t_structptr *s/*, int worldMap[mapHeight][mapWidth]*/)
@@ -283,7 +288,6 @@ void	move(t_structptr *s, double dx, double dy)
 		s->r->posX += dx;
 		s->r->posY += dy;
 	}
-
 }
 
 void	rotate(t_structptr *s, double alpha)
@@ -301,74 +305,47 @@ void	rotate(t_structptr *s, double alpha)
 
 int cclose(t_structptr *s)
 {
-	// mlx_loop_end(s->mlx->mlx);
 	mlx_clear_window(s->mlx->mlx, s->mlx->mlx_win);
 	mlx_destroy_image(s->mlx->mlx, s->mlx->img);
 	mlx_destroy_window(s->mlx->mlx, s->mlx->mlx_win);
 	mlx_destroy_display(s->mlx->mlx);
 	free(s->mlx->mlx);
-	// mlx_loop_end(s->mlx->mlx);
 	exit(0);
-	// return 0;
 }
 
 int keeb_listener(int keycode, t_structptr *s)
 {
-  if (keycode == KEY_ESC)
-    cclose(s);
-  else if (keycode == KEY_W)
-	  move(s, s->r->dirX * 0.5, s->r->dirY * 0.5);
-  else if (keycode == KEY_S)
-	  move(s, s->r->dirX * (-0.5), s->r->dirY * (-0.5));
-  else if (keycode == KEY_A)
-	  move(s, s->r->dirY * (-0.5), s->r->dirX * 0.5);
-  else if (keycode == KEY_D)
-	  move(s, s->r->dirY * (0.5), s->r->dirX * (-0.5));
-  else if (keycode == KEY_LEFT)
-	  rotate(s, 0.5);
-  else if (keycode == KEY_RIGHT)
-	  rotate(s, -0.5);
-  return 0;
+	if (keycode == KEY_ESC)
+		cclose(s);
+	else if (keycode == KEY_W)
+		move(s, s->r->dirX * 0.5, s->r->dirY * 0.5);
+	else if (keycode == KEY_S)
+		move(s, s->r->dirX * (-0.5), s->r->dirY * (-0.5));
+	else if (keycode == KEY_A)
+		move(s, s->r->dirY * (-0.5), s->r->dirX * 0.5);
+	else if (keycode == KEY_D)
+		move(s, s->r->dirY * (0.5), s->r->dirX * (-0.5));
+	else if (keycode == KEY_LEFT)
+		rotate(s, 0.5);
+	else if (keycode == KEY_RIGHT)
+		rotate(s, -0.5);
+	return 0;
 }
-
 
 int main(/*int argc, char **argv*/)
 {
-  t_mlx     mlx;
-  t_casting r;
-  t_structptr s;
+	t_mlx     mlx;
+	t_casting r;
+	t_structptr s;
 
-  s.mlx = &mlx;
-  s.r = &r;
-  // ctx.map = worldMap;
-
-
+	s.mlx = &mlx;
+	s.r = &r;
  	init_mlx(&mlx);
   	init_casting_base(&r);
-  	frame_maker(&s); // (s->mlx->mlx, s->r, worldMap);
-  // frame_maker(&mlx, &r, worldMap);
-  // frame_maker(&mlx, &r, worldMap);
- 	// mlx_do_key_autorepeaton(mlx.mlx);
+  	frame_maker(&s);
   	mlx_loop_hook(mlx.mlx, frame_maker, &s);
 	mlx_hook(mlx.mlx_win, ON_KEYDOWN, (1L<<0), keeb_listener, &s);
  	mlx_hook(mlx.mlx_win, ON_DESTROY, 0, cclose, &s);
 	mlx_loop(mlx.mlx);
-
-  // while(1)
-  // {
-  //   r.x = 0;
-  //   while (r.x < screenWidth)
-  //   {
-  //     init_casting_loop(&r);
-  //     dda(&r, worldMap);
-  //     calc_dist(&r);
-  //     if(r.side == 1)
-  //       r.color = 0x000000ff;
-  //     else
-  //       r.color = 0x00ff0000;
-  //     draw_column_to_img(&mlx, r.x, r.drawStart, r.drawEnd, r.color);
-  //     ++r.x;
-  //   }
-  //   mlx_put_image_to_window(mlx.mlx, mlx.mlx_win, mlx.img, 0, 0);
-  // }
+	return 0;
 }
