@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 12:56:57 by mflury            #+#    #+#             */
-/*   Updated: 2024/09/05 14:34:34 by mflury           ###   ########.fr       */
+/*   Updated: 2024/09/07 03:37:07 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -299,15 +299,23 @@ void	rotate(t_structptr *s, double alpha)
     s->r->planeY = oldPlaneX * sin(alpha) + s->r->planeY * cos(alpha);
 }
 
-int cclose()
+int cclose(t_structptr *s)
 {
-  exit(0);
+	// mlx_loop_end(s->mlx->mlx);
+	mlx_clear_window(s->mlx->mlx, s->mlx->mlx_win);
+	mlx_destroy_image(s->mlx->mlx, s->mlx->img);
+	mlx_destroy_window(s->mlx->mlx, s->mlx->mlx_win);
+	mlx_destroy_display(s->mlx->mlx);
+	free(s->mlx->mlx);
+	// mlx_loop_end(s->mlx->mlx);
+	exit(0);
+	// return 0;
 }
 
 int keeb_listener(int keycode, t_structptr *s)
 {
   if (keycode == KEY_ESC)
-    cclose();
+    cclose(s);
   else if (keycode == KEY_W)
 	  move(s, s->r->dirX * 0.5, s->r->dirY * 0.5);
   else if (keycode == KEY_S)
@@ -340,10 +348,10 @@ int main(/*int argc, char **argv*/)
   	frame_maker(&s); // (s->mlx->mlx, s->r, worldMap);
   // frame_maker(&mlx, &r, worldMap);
   // frame_maker(&mlx, &r, worldMap);
- 	mlx_do_key_autorepeaton(mlx.mlx);
+ 	// mlx_do_key_autorepeaton(mlx.mlx);
   	mlx_loop_hook(mlx.mlx, frame_maker, &s);
 	mlx_hook(mlx.mlx_win, ON_KEYDOWN, (1L<<0), keeb_listener, &s);
- 	mlx_hook(mlx.mlx_win, ON_DESTROY, 0, &cclose, &s);
+ 	mlx_hook(mlx.mlx_win, ON_DESTROY, 0, cclose, &s);
 	mlx_loop(mlx.mlx);
 
   // while(1)
