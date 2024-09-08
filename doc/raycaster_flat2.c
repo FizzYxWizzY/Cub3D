@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 12:56:57 by mflury            #+#    #+#             */
-/*   Updated: 2024/09/07 05:36:48 by mflury           ###   ########.fr       */
+/*   Updated: 2024/09/09 01:33:15 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,10 +269,14 @@ int  frame_maker(t_structptr *s/*, int worldMap[mapHeight][mapWidth]*/)
 		init_casting_loop(s->r);
 		dda(s->r, worldMap);
 		calc_dist(s->r);
-		if(s->r->side == 1)
+		if(s->r->side == 1 && s->r->rayDirY < 0)
 			s->r->color = 0x000000ff;
-		else
+		else if(s->r->side == 1 && s->r->rayDirY > 0)
+			s->r->color = 0x00ff00ff;
+		else if (s->r->side == 0 && s->r->rayDirX < 0)
 			s->r->color = 0x00ff0000;
+		else if (s->r->side == 0 && s->r->rayDirX > 0)
+			s->r->color = 0x00ffffff;
 		draw_column_to_img(s->mlx, s->r->x, s->r->drawStart, s->r->drawEnd, s->r->color);
 		s->r->x++;
 	}
