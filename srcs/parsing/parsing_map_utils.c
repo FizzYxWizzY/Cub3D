@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 08:56:22 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/16 01:26:54 by mflury           ###   ########.fr       */
+/*   Updated: 2024/09/09 19:32:07 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,7 @@ void	is_closed_map(t_file *file)
 		error("cant find start player x for floodfill.");
 	}
 	y = get_start_y(map, file);
-	if (x == 0)
+	if (y == 0)
 	{
 		free_copy(map, file);
 		free_all(file);

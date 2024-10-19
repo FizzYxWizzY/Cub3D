@@ -1,12 +1,12 @@
-NO ./assets/path_to_the_north_texture.txt    pelo
-    SO ./assets/path_to_the_south_texture.txt
-        WE    ./assets/path_to_the_west_texture.txt
+NO ./assets/abourgue_2_.xpm
+    SO ./assets/mossy.xpm
+        WE    ./assets/purplestone.xpm    pelo
 
 
-EA ./assets/path_to_the_east_texture.txt
+EA ./assets/colorstone.xpm
 
-        F     0,255,0
- C       0,0,255
+        F     0,128,0
+ C       0,153,255
 
 je
    suis
@@ -26,6 +26,6 @@ je
 11000000110101011100000010001
 10000000000000001100000010001
 10000000000000001101010010001
-11000001110101011111011110S0111111111111
+11000001110101011111011110N0111111111111
 11110111 1110101 101111010001
 11111111 1111111 111111111111

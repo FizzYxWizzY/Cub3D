@@ -1,21 +1,19 @@
+NO ./assets/purplestone.xpm    pelo
+    SO ./assets/mossy.xpm
+        WE    ./assets/bluestone.xpm
 
 
-NO ./assets/path_to_the_north_texture.txt
-    SO ./assets/path_to_the_south_texture.txt
-        WE    ./assets/path_to_the_west_texture.txt
+EA ./assets/colorstone.xpm
 
-
-EA ./assets/path_to_the_east_texture.txt
-
-        F     220,100,0
- C       225,30,0
+        F     255,255,0
+ C       0,0,0
 
 
 
     11111   1
     10001  101
     10001110001
-    10000000N001
+    10E000000001
     10001110001
     10001  101
     11111   1

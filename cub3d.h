@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 06:21:41 by mflury            #+#    #+#             */
-/*   Updated: 2024/09/01 13:34:50 by mflury           ###   ########.fr       */
+/*   Updated: 2024/10/18 00:09:48 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <limits.h>
+#include <math.h>
 #include "./libft/libft.h"
 #include "./gnl/get_next_line.h"
 
@@ -76,6 +77,12 @@ enum e_events
 };
 # endif
 
+#define screenWidth 1280
+#define screenHeight 720
+#define mapWidth 24
+#define mapHeight 24
+#define pi 3.14159265359
+
 typedef struct s_mlx
 {
 	void		*img;
@@ -102,6 +109,17 @@ typedef struct	s_textures
 	int			trgb_ceiling;
 }				t_textures;
 
+typedef struct	s_img
+{
+	void		*texture;
+	char		*addr;
+	int			bits_per_pixel;
+	int			line_length;
+	int			endian;
+	int			img_width;
+	int			img_height;
+}				t_img;
+
 typedef struct	s_file
 {
 	int			fd;
@@ -112,11 +130,43 @@ typedef struct	s_file
 	size_t		maxlength;
 }				t_file;
 
-typedef struct	s_player
+typedef struct	s_casting
 {
-	size_t x;
-	int y;
-}				t_player;
+	double		posX;
+	double		posY;
+	double		dirX;
+	double		dirY;
+	double		planeX;
+	double		planeY;
+	int			x;
+	double		cameraX;
+	double		rayDirX;
+	double		rayDirY;
+	int			mapX;
+	int			mapY;
+	double		sideDistX;
+	double		sideDistY;
+	double		deltaDistX;
+	double		deltaDistY;
+	double		perpWallDist;
+	int			stepX;
+	int			stepY;
+	int			hit;
+	int			side;
+	int			lineHeight;
+	int			drawStart;
+	int			drawEnd;
+	int			color;
+	double		wallX;
+}				t_casting;
+
+typedef struct	s_structptr
+{
+	t_mlx		*mlx;
+	t_casting	*r;
+	t_file		*file;
+	t_img		*img[5];
+}				t_structptr;
 
 // General Utils:
 
@@ -155,17 +205,23 @@ void	free_copy(char **map, t_file *file);
 
 // Moves:
 
-int	keeb_listener(int keycode, t_mlx *mlx, t_file *file);
+int		keeb_listener(int keycode, t_structptr *s);
+void	move(t_structptr *s, double dx, double dy);
+void	rotate(t_structptr *s, double alpha);
 
 // Render:
 
 void	mlx_put_pixel_to_image(t_mlx *mlx, int x, int y, int color);
 int		create_trgb(int r, int g, int b);
 void	set_trgb_all(t_file *file);
-void	create_window(t_mlx *mlx, t_file *file);
-void	draw_minimap(t_mlx *mlx, t_file *file);
-void	draw_background(t_mlx *mlx, t_file *file);
 
-// void	draw_bg(t_mlx *mlx);
+int		frame_maker(t_structptr *s);
+void	draw_background(t_mlx *mlx, int ceiling, int floor);
+void	init_casting_loop(t_casting *casting);
+void	init_casting_loop_part_one(t_casting *casting);
+void	dda(t_casting *casting, char **worldMap);
+void	calc_dist(t_casting *casting);
+void	draw_column_to_img(t_mlx *mlx, int x, int drawStart, int drawEnd, int color);
+
 
 #endif
