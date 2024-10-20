@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 12:56:57 by mflury            #+#    #+#             */
-/*   Updated: 2024/10/19 07:47:45 by mflury           ###   ########.fr       */
+/*   Updated: 2024/10/20 19:28:17 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -331,7 +331,11 @@ int  frame_maker(t_structptr *s)
 void	move(t_structptr *s, double dx, double dy)
 {
 	if (s->file->map[(int)(s->r->posX + dx + 0.01)][(int)(s->r->posY + dy + 0.01)] != '1' &&
-		s->file->map[(int)(s->r->posX + dx + 0.01)][(int)(s->r->posY + dy + 0.01)] != ' ')
+		s->file->map[(int)(s->r->posX + dx + 0.01)][(int)(s->r->posY + dy + 0.01)] != ' ' &&
+		s->file->map[(int)(s->r->posX + dx + 0.1)][(int)(s->r->posY + dy + 0.1)] != '1' &&
+		s->file->map[(int)(s->r->posX + dx + 0.1)][(int)(s->r->posY + dy + 0.1)] != ' ' &&
+		s->file->map[(int)(s->r->posX + dx)][(int)(s->r->posY + dy)] != '1' &&
+		s->file->map[(int)(s->r->posX + dx)][(int)(s->r->posY + dy)] != ' ')
 	{
 		s->r->posX += dx;
 		s->r->posY += dy;
