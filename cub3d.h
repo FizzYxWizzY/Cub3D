@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 06:21:41 by mflury            #+#    #+#             */
-/*   Updated: 2024/10/18 00:09:48 by mflury           ###   ########.fr       */
+/*   Updated: 2024/10/20 20:14:21 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ enum e_events
 };
 # endif
 
-#define screenWidth 1280
-#define screenHeight 720
+#define screenWidth 640
+#define screenHeight 480
 #define mapWidth 24
 #define mapHeight 24
 #define pi 3.14159265359
@@ -222,6 +222,7 @@ void	init_casting_loop_part_one(t_casting *casting);
 void	dda(t_casting *casting, char **worldMap);
 void	calc_dist(t_casting *casting);
 void	draw_column_to_img(t_mlx *mlx, int x, int drawStart, int drawEnd, int color);
+void	free_texture_image(t_structptr *s);
 
 
 #endif

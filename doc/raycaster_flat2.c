@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 12:56:57 by mflury            #+#    #+#             */
-/*   Updated: 2024/10/20 19:28:17 by mflury           ###   ########.fr       */
+/*   Updated: 2024/10/20 21:03:32 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -335,7 +335,9 @@ void	move(t_structptr *s, double dx, double dy)
 		s->file->map[(int)(s->r->posX + dx + 0.1)][(int)(s->r->posY + dy + 0.1)] != '1' &&
 		s->file->map[(int)(s->r->posX + dx + 0.1)][(int)(s->r->posY + dy + 0.1)] != ' ' &&
 		s->file->map[(int)(s->r->posX + dx)][(int)(s->r->posY + dy)] != '1' &&
-		s->file->map[(int)(s->r->posX + dx)][(int)(s->r->posY + dy)] != ' ')
+		s->file->map[(int)(s->r->posX + dx)][(int)(s->r->posY + dy)] != ' ' &&
+		s->file->map[(int)(s->r->posX + dx - 0.1)][(int)(s->r->posY + dy - 0.1)] != '1' &&
+		s->file->map[(int)(s->r->posX + dx - 0.1)][(int)(s->r->posY + dy - 0.1)] != ' ')
 	{
 		s->r->posX += dx;
 		s->r->posY += dy;
@@ -359,8 +361,15 @@ int cclose(t_structptr *s)
 {
 	mlx_clear_window(s->mlx->mlx, s->mlx->mlx_win);
 	mlx_destroy_image(s->mlx->mlx, s->mlx->img);
+	mlx_destroy_image(s->mlx->mlx, s->img[0]->texture);
+	mlx_destroy_image(s->mlx->mlx, s->img[1]->texture);
+	mlx_destroy_image(s->mlx->mlx, s->img[2]->texture);
+	mlx_destroy_image(s->mlx->mlx, s->img[3]->texture);
+	
+	
 	mlx_destroy_window(s->mlx->mlx, s->mlx->mlx_win);
 	mlx_destroy_display(s->mlx->mlx);
+	free_texture_image(s);
 	free(s->mlx->mlx);
 	free_all(s->file);
 	exit(0);
@@ -385,20 +394,32 @@ int keeb_listener(int keycode, t_structptr *s)
 	return 0;
 }
 
+void	free_texture_image(t_structptr *s)
+{
+	int i;
+
+	i = 0;
+	while (i < 4)
+	{
+		// mlx_destroy_image(s->mlx->mlx, s->mlx->img);
+		// mlx_destroy_image(s->mlx->mlx, s->img[i]->texture);
+		// free(s->img[i]->texture);
+		// free(s->img[i]->addr);
+		free(s->img[i++]);
+	}
+}
+
 void	set_texture_to_image(t_structptr *s)
 {
 	s->img[0] = malloc(sizeof(t_img));
 	s->img[0]->texture = mlx_xpm_file_to_image(s->mlx->mlx, s->file->textures.north, &s->img[0]->img_width, &s->img[0]->img_height);
 	s->img[0]->addr = mlx_get_data_addr(s->img[0]->texture, &s->img[0]->bits_per_pixel, &s->img[0]->line_length, &s->img[0]->endian);
-	
 	s->img[1] = malloc(sizeof(t_img));
 	s->img[1]->texture = mlx_xpm_file_to_image(s->mlx->mlx, s->file->textures.south, &s->img[1]->img_width, &s->img[1]->img_height);
 	s->img[1]->addr = mlx_get_data_addr(s->img[1]->texture, &s->img[1]->bits_per_pixel, &s->img[1]->line_length, &s->img[1]->endian);
-
 	s->img[2] = malloc(sizeof(t_img));
 	s->img[2]->texture = mlx_xpm_file_to_image(s->mlx->mlx, s->file->textures.east, &s->img[2]->img_width, &s->img[2]->img_height);
 	s->img[2]->addr = mlx_get_data_addr(s->img[2]->texture, &s->img[2]->bits_per_pixel, &s->img[2]->line_length, &s->img[2]->endian);
-
 	s->img[3] = malloc(sizeof(t_img));
 	s->img[3]->texture = mlx_xpm_file_to_image(s->mlx->mlx, s->file->textures.west, &s->img[3]->img_width, &s->img[3]->img_height);
 	s->img[3]->addr = mlx_get_data_addr(s->img[3]->texture, &s->img[3]->bits_per_pixel, &s->img[3]->line_length, &s->img[3]->endian);
