@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 21:40:25 by mflury            #+#    #+#             */
-/*   Updated: 2024/08/12 02:53:45 by mflury           ###   ########.fr       */
+/*   Updated: 2024/10/21 08:58:26 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	parse_file(int argc, char **argv, t_file *file)
 {
-	int i = 0;
+	// int i = 0;
 	// set default values for all the file struct.
 	init_data(file);
 
@@ -26,10 +26,10 @@ void	parse_file(int argc, char **argv, t_file *file)
 	
 	// find and copy the map in the file->mapstruct
 	set_map(file);
-	i = 0;
-	while (i < (file->maplinecount + 2))
-		printf("map: '%s'\n", file->map[i++]);	
-	printf("line count: %d\nline max lenght: %ld\n", file->maplinecount, file->maxlength);
+	// i = 0;
+	// while (i < (file->maplinecount + 2))
+		// printf("map: '%s'\n", file->map[i++]);
+	// printf("line count: %d\nline max lenght: %ld\n", file->maplinecount, file->maxlength);
 
 
 }

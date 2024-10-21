@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 08:56:22 by mflury            #+#    #+#             */
-/*   Updated: 2024/09/09 19:32:07 by mflury           ###   ########.fr       */
+/*   Updated: 2024/10/21 08:56:15 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,32 @@ char	**copy_map(t_file *file)
 	return copy;
 }
 
+int	fillflood(char **map, t_file *file, size_t x, int y)
+{
+	if (map[y][x] == '1' || map[y][x] == '0')
+	{
+		if (map[y][x] == '0')
+		{
+			// printf("map fucked up. (map[%d][%ld])\n", y, x);
+			free_copy(map, file);
+			free_all(file);
+			error("outter map is fucked up");
+			return 1;
+		}
+		return 0;
+	}
+	map[y][x] = '1';
+	if (x + 1 < file->maxlength + 2)
+		fillflood(map, file, x + 1, y);
+	if (y + 1 < file->maplinecount + 2)
+		fillflood(map, file, x, y + 1);
+	if ((int)x - 1 >= 0)
+		fillflood(map, file, x - 1, y);
+	if (y - 1 >= 0)
+	fillflood(map, file, x, y - 1);
+	return 0;
+}
+
 int	floodfill(char **map, t_file *file, size_t x, int y)
 {
 	if (map[y][x] == '1' || map[y][x] == ' ')
@@ -75,7 +101,10 @@ int	floodfill(char **map, t_file *file, size_t x, int y)
 		if (map[y][x] == ' ')
 		{
 			map[y][x] = '?';
-			printf("map fucked up. (map[%d][%ld])\n", y, x);
+			// printf("map fucked up. (map[%d][%ld])\n", y, x);
+			free_copy(map, file);
+			free_all(file);
+			error("inner map is fucked up");
 			return 1;
 		}
 		return 0;
@@ -142,12 +171,19 @@ void	free_copy(char **map, t_file *file)
 
 void	print_map_copy(char **map, t_file *file)
 {
-	int		y;
+	int	y;
+	size_t x;
 
 	y = 0;
+	x = 0;
 	while (y < (file->maplinecount + 2))
 	{
-		printf("floodfill: '%s'\n", map[y++]);
+		printf("floodfill: '");
+		while (x < file->maxlength + 2)
+			printf("%c", map[y][x++]);
+		printf("'\n");
+		x = 0;
+		++y;
 	}
 }
 
@@ -159,25 +195,16 @@ void	is_closed_map(t_file *file)
 
 	map = copy_map(file);
 	x = get_start_x(map, file);
-	if (x == 0)
-	{
-		free_copy(map, file);
-		free_all(file);
-		error("cant find start player x for floodfill.");
-	}
 	y = get_start_y(map, file);
-	if (y == 0)
+	if ((int)x == 0 || y == 0)
 	{
 		free_copy(map, file);
 		free_all(file);
-		error("cant find start player y for floodfill.");
+		error("cant find start player x/y for floodfill.");
 	}
-	if (floodfill(map, file, x, y))
-	{
-		free_copy(map, file);
-		free_all(file);
-		return;
-	}
-	print_map_copy(map, file); // should not go in prod.
+	(void)floodfill(map, file, x, y);
+	// print_map_copy(map, file); // should not go in prod.
+	(void)fillflood(map, file, 0, 0);
+	// print_map_copy(map, file); // should not go in prod.
 	free_copy(map, file);
 }

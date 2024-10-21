@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 08:55:50 by mflury            #+#    #+#             */
-/*   Updated: 2024/09/01 13:02:10 by mflury           ###   ########.fr       */
+/*   Updated: 2024/10/21 08:55:25 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ char	*set_path(char *line)
 	while (line[i] && line[i] != '\n' && line[i] != ' ' && line[i] != '\t')
 		path[k++] = line[i++];
 	path[k] = '\0';
-	printf("brut line: \"%s\"\n", line);
-	printf("sanitized path: \"%s\"\n", path);
+	// printf("brut line: \"%s\"\n", line);
+	// printf("sanitized path: \"%s\"\n", path);
 	return (path);
 }
 
